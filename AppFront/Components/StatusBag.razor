@@ -1,0 +1,11 @@
+﻿<span class="bg-status-@Status nowrap">@T()</span>
+
+@code {
+    [Parameter]
+    public Post Status { get; set; }
+
+    string T()
+    {
+        return Status.ToString();
+    }
+}

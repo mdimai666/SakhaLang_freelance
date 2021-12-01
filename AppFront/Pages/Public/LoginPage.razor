@@ -1,0 +1,188 @@
+@page "/Login"
+@layout BlankLayout
+
+<div class="content-wrapper">
+    <div class="content-header row">
+    </div>
+    <div class="content-body">
+        <div class="auth-wrapper auth-v2">
+            <div class="spacer-4"></div>
+            <div class="auth-inner row m-0 xcenter">
+                <!-- Login-->
+                @if (!IsAlreadyAuth)
+                {
+                    <div class="d-flex 1col-12 align-items-center auth-bg px-2 p-lg-5" style="width:400px;">
+
+                        <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
+
+                            <div class="mb-3 text-center">
+                                <img src="/img/logo.png" style="" />
+                            </div>
+
+                            <h2 class="card-title font-weight-bold mb-1 text-center">Добро пожаловать</h2>
+
+                            @if (!string.IsNullOrEmpty(AuthProvider))
+                            {
+                                <div class="spacer-3"></div>
+                                <div class="py-4">
+                                    <a class="btn btn-outline-primary btn-block bg-white">
+                                        <div class="row">
+                                            <div class="d-flex flex-column col-4">
+                                                <div class="bg-contain spacer-1" style="background-image:url('img/esia_logo.svg');"></div>
+                                                <div class="bg-contain spacer-2" style="background-image:url('img/oneclick_logo.svg');"></div>
+                                            </div>
+                                            <div class="col-8 fz14px">
+                                                Авторизация ...
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="spacer-2"></div>
+                                    <div class="text-center">
+                                        @if (IsLoginLoading)
+                                        {
+                                            <div class="spinner-border text-primary"></div>
+                                        }
+                                    </div>
+
+                                    <div class="spacer-2"></div>
+                                    @if (ShowAuthError)
+                                    {
+                                        <div class="spacer-1"></div>
+
+                                        <div class="alert alert-danger mt-1 alert-validation-msg" role="alert">
+                                            <div class="alert-body">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-info mr-50 align-middle">
+                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                                </svg>
+                                                @Error
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+
+                                <EditForm Model="auth" OnValidSubmit="ExecuteLogin" class="auth-login-form mt-2">
+                                    <DataAnnotationsValidator />
+                                    @* <ValidationSummary /> *@
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="login-email">Email</label>
+                                        <InputText class="form-control hide-valid-style" id="login-email" type="text"
+                                           name="login-email" placeholder="john@example.com" aria-describedby="login-email"
+                                           autofocus="" tabindex="1" @bind-Value=auth.Login />
+                                        <span id="login-email-error" class="error">
+                                            <ValidationMessage For="@(()=> auth.Login)" />
+                                        </span>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="d-flex justify-content-between">
+                                            <label for="login-password">Пароль</label>
+                                            <a href="/forgot-password">
+                                                <small>Забыли пароль?</small>
+                                            </a>
+                                        </div>
+                                        <div class="input-group input-group-merge form-password-toggle">
+                                            <InputText class="form-control hide-valid-style form-control-merge"
+                                               id="login-password" type="password" name="login-password" placeholder="****"
+                                               aria-describedby="login-password" tabindex="2" @bind-Value=auth.Password />
+                                            @* <div class="input-group-append">
+                                                <span class="input-group-text cursor-pointer">
+                                                <i data-feather="eye">
+                                                </i>
+                                                </span>
+                                                </div> *@
+                                        </div>
+                                        <span id="login-password-error" class="error">
+                                            <ValidationMessage For="@(()=> auth.Password)" />
+                                        </span>
+
+                                    </div>
+                                    @* <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" id="remember-me" type="checkbox" tabindex="3" />
+                                        <label class="custom-control-label" for="remember-me"> Remember Me</label>
+                                        </div>
+                                        </div> *@
+
+                                    @if (ShowAuthError)
+                                    {
+                                        <div class="spacer-1"></div>
+
+                                        <div class="alert alert-danger mt-1 alert-validation-msg" role="alert">
+                                            <div class="alert-body">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-info mr-50 align-middle">
+                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                                </svg>
+                                                @Error
+                                            </div>
+                                        </div>
+                                    }
+
+                                    <div class="spacer-1"></div>
+                                    <button class="btn btn-primary btn-block" type="submit" tabindex="4">Войти</button>
+                                </EditForm>
+                                @if (Q.Site.SysOptions.AllowUsersSelfRegister)
+                                {
+                                    <p class="text-center mt-2">
+                                        <span>Нет аккаунта?</span>
+                                        <a href="/Register">
+                                            <span>&nbsp;Создать аккаунт</span>
+                                        </a>
+                                    </p>
+                                }
+
+
+
+                                @if (false)
+                                {
+                                    <div class="divider my-2">
+                                        <div class="divider-text">Другие варианты</div>
+                                    </div>
+                                    <div class="auth-footer-btn d-flex justify-content-center">
+                                        <a class="btn btn-outline-primary btn-block bg-white" @onclick=@(e=>ThirdLogin())>
+                                            <div class="row">
+                                                <div class="d-flex flex-column col-4">
+                                                    <div class="bg-contain spacer-1" style="background-image:url('img/esia_logo.svg');"></div>
+                                                    <div class="bg-contain spacer-2" style="background-image:url('img/oneclick_logo.svg');"></div>
+                                                </div>
+                                                <div class="col-8 fz14px">
+                                                    Авторизация Госуслуги или OneClick
+                                                </div>
+                                            </div>
+                                        </a>
+                                        @if (false)
+                                        {
+                                            <a class="btn btn-facebook" href="javascript:void(0)">
+                                                <i data-feather="facebook"></i>
+                                            </a>
+                                            <a class="btn btn-twitter white" href="javascript:void(0)">
+                                                <i data-feather="twitter"></i>
+                                            </a>
+                                            <a class="btn btn-google" href="javascript:void(0)">
+                                                <i data-feather="mail"></i>
+                                            </a>
+                                            <a class="btn btn-github" href="javascript:void(0)">
+                                                <i data-feather="github"></i>
+                                            </a>
+                                        }
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+                <!-- /Login-->
+            </div>
+        </div>
+    </div>
+</div>

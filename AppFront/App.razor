@@ -1,0 +1,61 @@
+<CascadingAuthenticationState>
+    @if (!isLoading && !isSuccess)
+    {
+        <div class="xcenter" style="height: 100vh;">
+            <div class="text-center m-5">
+                <img src="img/logo.png" width="150" class="mb-3" />
+                <h4>Технические работы</h4>
+                <p>Попробуйте открыть сайт позже</p>
+            </div>
+        </div>
+    }
+    else if (isLoading)
+    {
+        <div class="xcenter" style="height: 100vh;">
+            <div class="text-center m-5">
+                <img src="img/logo.png" width="150" class="mb-3" />
+                <p>Загрузка...</p>
+                <div class="loader">
+		            <div class="loader-item"></div>
+		            <div class="loader-item"></div>
+		            <div class="loader-item"></div>
+	            </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
+            <Found Context="routeData">
+                <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                    <Authorizing>
+                        <text> Please wait, we are authorizing the user. </text>
+                    </Authorizing>
+                    <NotAuthorized>
+
+                        @if (!context?.User?.Identity?.IsAuthenticated ?? false)
+                        {
+                            <RedirectToLogin />
+                        }
+                        else
+                        {
+                            <p> You are not authorized to access this page. </p>
+                        }
+
+                    </NotAuthorized>
+                </AuthorizeRouteView>
+            </Found>
+            <NotFound>
+
+                <LayoutView Layout="@typeof(MainLayout)">
+                    @* <p>Sorry, there's nothing at this address.</p> *@
+                    <AppFront.Shared.Errors.Error404 />
+                </LayoutView>
+
+            </NotFound>
+        </Router>
+    }
+</CascadingAuthenticationState>
+
+
+<AntContainer />

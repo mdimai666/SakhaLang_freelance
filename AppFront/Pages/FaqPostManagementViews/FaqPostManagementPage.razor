@@ -1,0 +1,48 @@
+@page "/FaqPostManagement"
+
+@inject IJSRuntime JS
+
+<div class="content-wrapper">
+    <div class="content-header row">
+    </div>
+    <h1>Управление вопросами и ответами</h1>
+    <hr>
+
+    <div class="text-right">
+        <a href="/EditFaqPost">
+            <Button>Добавить</Button>
+        </a>
+    </div>
+    
+    <Table @ref="table"
+           TItem="FaqPost"
+           DataSource="@Items"
+           Total="_total"
+           @bind-PageIndex="_pageIndex"
+           @bind-PageSize="_pageSize"
+           OnChange="OnChange"
+           
+    >
+    @{
+            var city = context;
+    }
+
+        @*<Column @bind-Field="@context.Id" Sortable />*@
+        <Column Field="@context.Title" Sortable Title="Название">
+            <div>
+                <a href="/EditFaqPost/@context.Id" class="text-accent" >@context.Title</a>
+                @*<span class="car-number ml-2">@context.CarNumber</span>*@
+            </div>
+            @*<div>
+                <span class="text-secondary">@((MarkupString)context.Content)</span>
+            </div>*@
+        </Column>
+        <Column @bind-Field="@context.Modified" Format="yyyy-MM-dd" Sortable />
+
+    </Table>
+
+    <br />
+    <PagesTotal Page=_pageIndex PageSize=_pageSize TotalPages=_total />
+</div>
+
+

@@ -1,0 +1,146 @@
+﻿@page "/settings/"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+
+<div class="content-wrapper">
+
+    <h1>Настройки</h1>
+
+    <AppFront.Pages.Settings.SettingsTabs />
+    <hr>
+    <Collapse DefaultActiveKey="@(new[] { "general", "smtp", "testmail", "minnews" })">
+
+        <Panel Key="general">
+            <HeaderTemplate>
+                Основные
+            </HeaderTemplate>
+            <ChildContent>
+                <AntDesign.Form Model="@SysOptions"
+                                OnFinish="OnSaveSysOptions"
+                                Class="form-compact"
+                                LabelColSpan="8"
+                                WrapperColSpan="6">
+                    <FormItem>
+                        <AntDesign.Input @bind-Value="@context.SiteName" />
+                    </FormItem>
+                    <FormItem WrapperColSpan="16" Label="Регистрация">
+                        <AntDesign.Checkbox @bind-Value="context.AllowUsersSelfRegister">Разрешить самостоятельную регистрацию</AntDesign.Checkbox>
+                    </FormItem>
+                    @*<FormItem WrapperColSpan="16" Label="Прием заявок открыт">
+                        <AntDesign.Checkbox @bind-Value="context.AllowAddZayavka">Разрешить прием новых заявок</AntDesign.Checkbox>
+                    </FormItem>*@
+                    <FormItem WrapperColSpan="16" WrapperColOffset="8">
+                        <Button Type="@ButtonType.Primary" HtmlType="submit">
+                            Сохранить
+                        </Button>
+                    </FormItem>
+                </AntDesign.Form>
+            </ChildContent>
+        </Panel>
+        <Panel Key="smtp">
+            <HeaderTemplate>
+                Почта
+            </HeaderTemplate>
+            <ChildContent>
+                <AntDesign.Form Model="@smtpSettings"
+                                OnFinish="OnSmtpSave"
+                                Class="form-compact"
+                                LabelColSpan="8"
+                                WrapperColSpan="6">
+                    <FormItem>
+                        <AntDesign.Input @bind-Value="@context.FromName" />
+                    </FormItem>
+                    <FormItem>
+                        <AntDesign.Input @bind-Value="@context.Host" />
+                    </FormItem>
+                    <FormItem>
+                        <AntDesign.Input @bind-Value="@context.Port" />
+                    </FormItem>
+                    <FormItem>
+                        <AntDesign.Input Number @bind-Value="@context.SmtpUser" AutoComplete=false />
+                    </FormItem>
+                    <FormItem>
+                        <AntDesign.InputPassword @bind-Value="@context.SmtpPassword" AutoComplete=false />
+                    </FormItem>
+                    <FormItem WrapperColSpan="16">
+                        <AntDesign.Checkbox @bind-Value="context.Secured">Защищенное</AntDesign.Checkbox>
+                    </FormItem>
+                    <FormItem WrapperColSpan="16" Label="Тестовый сервер">
+                        <AntDesign.Checkbox @bind-Value="context.IsTestServer">Не отправлять уведомления</AntDesign.Checkbox>
+                    </FormItem>
+                    <FormItem WrapperColSpan="16" WrapperColOffset="8">
+                        <Button Type="@ButtonType.Primary" HtmlType="submit">
+                            Сохранить
+                        </Button>
+                    </FormItem>
+                </AntDesign.Form>
+            </ChildContent>
+        </Panel>
+        
+        <Panel Key="testmail">
+            <HeaderTemplate>
+                Тестовое письмо
+            </HeaderTemplate>
+            <ChildContent>
+                <AntDesign.Form Model="@testMailMessage"
+                                OnFinish="SendTestMail"
+                                Class="form-compact"
+                                LabelColSpan="8"
+                                WrapperColSpan="6">
+                    <FormItem>
+                        <AntDesign.Input @bind-Value="@context.Email" Placeholder="example@mail.ru" />
+                    </FormItem>
+                    <FormItem>
+                        <AntDesign.Input @bind-Value="@context.Subject" Placeholder="Тема письма" />
+                    </FormItem>
+                    <FormItem>
+                        <AntDesign.TextArea @bind-Value="@context.Message" AutoComplete=false />
+                    </FormItem>
+                    <FormItem WrapperColSpan="16" WrapperColOffset="8">
+                        <Button Type="@ButtonType.Primary" HtmlType="submit" Loading=testMailLoading>
+                            Отправить
+                        </Button>
+                    </FormItem>
+                </AntDesign.Form>
+            </ChildContent>
+        </Panel>
+       
+        @*<Panel Key="testsms">
+            <HeaderTemplate>
+                Тестовый СМС
+            </HeaderTemplate>
+            <ChildContent>
+                <AntDesign.Form Model="@testSmsMessage"
+                                OnFinish="SendTestSms"
+                                Class="form-compact"
+                                LabelColSpan="8"
+                                WrapperColSpan="6">
+                    <FormItem>
+                        <AntDesign.Input @bind-Value="@context.Phone" Placeholder="+79140000000" />
+                    </FormItem>
+                    <FormItem>
+                        <AntDesign.TextArea @bind-Value="@context.Message" AutoComplete=false />
+                    </FormItem>
+                    <FormItem WrapperColSpan="16" WrapperColOffset="8">
+                        <Button Type="@ButtonType.Primary" HtmlType="submit" Loading=testSmsLoading>
+                            Отправить
+                        </Button>
+                    </FormItem>
+                </AntDesign.Form>
+            </ChildContent>
+        </Panel>*@
+
+        @*<Panel Key="minnews">
+            <HeaderTemplate>
+                Новости с других ресурсов
+            </HeaderTemplate>
+            <ChildContent>
+                <Button HtmlType="submit" Loading=syncNewsLoading OnClick=SyncNewsNow>
+                    Синхронизировать новости сейчас
+                </Button>
+            </ChildContent>
+        </Panel>*@
+    </Collapse>
+
+
+</div>

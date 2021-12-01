@@ -1,0 +1,76 @@
+@page "/contacts"
+@using System.ComponentModel.DataAnnotations;
+
+@using System.Text.Json
+@using System.ComponentModel
+@using AntDesign.TableModels
+
+<h3>Контакты</h3>
+
+<div class="container-fluid">
+
+
+
+    <div class="row">
+        <div class="col-12">
+            <Card Bordered="false" Title=@("Наши контакты")>
+                <Body>
+                    <ContactsList />
+                </Body>
+            </Card>
+        </div>
+        <div class="col-12 col-sm-6">
+            <Card Bordered="false" Title=@("Напишите нам")>
+                <Body>
+                    @if (WasSend)
+                    {
+                        <Result Status="success"
+                            Title="Успешно отправлено"
+                            SubTitle="Мы получили Ваше письмо ">
+
+                        </Result>
+                    }
+                    else
+                    {
+                        <Form Model="@model"
+                          OnFinish="OnFinish"
+                          OnFinishFailed="OnFinishFailed"
+                          Layout="@FormLayout.Vertical"
+                          Class="form-compact"
+                          LabelColSpan="20"
+                          WrapperColSpan="20">
+                            <FormItem >
+                                <Input @bind-Value="@context.Name" />
+                            </FormItem>
+                            <FormItem >
+                                <Input @bind-Value="@context.Phone" />
+                            </FormItem>
+                            <FormItem Label="Email">
+                                <Input @bind-Value="@context.Email" />
+                            </FormItem>
+
+                            <FormItem>
+                                <TextArea Rows=7 @bind-Value="@context.TextMessage" ShowCount MaxLength=500 />
+
+                            </FormItem>
+
+
+                            <FormItem WrapperColOffset="8" WrapperColSpan="16">
+                                <Button Type="@ButtonType.Primary" HtmlType="submit" Loading=isLoading>
+                                    Отправить
+                                </Button>
+                            </FormItem>
+
+                        </Form>
+                    }
+                </Body>
+            </Card>
+        </div>
+        <div class="col-12 col-sm-6">
+            <img src="/img/contact-picture.svg" />
+        </div>
+        
+    </div>
+</div>
+
+

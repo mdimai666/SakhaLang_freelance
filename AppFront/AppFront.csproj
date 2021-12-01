@@ -1,0 +1,71 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <NeutralLanguage>ru</NeutralLanguage>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <AssemblyVersion>1.0.2.2</AssemblyVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+	  <!--<BlazorEnableCompression>false</BlazorEnableCompression>-->
+	  <!--<PublishTrimmed>false</PublishTrimmed>-->
+	  <!--<SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>-->
+	  <FileVersion>1.0.2.2</FileVersion>
+
+	  <!--<BlazorCacheBootResources>false</BlazorCacheBootResources>-->
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;1591;0162;0414;1998;8618;8604;0204</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;1591;0162;0414;1998;8618;8604</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+    <!-- Для hotreload, чтобы сам блзор не перезагружался -->
+    <Content Remove="wwwroot\css\**\*.less" />
+    <Content Remove="wwwroot\css\**\*.css.map" />
+    <!-- //Для hotreload -->
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
+    <!-- Для hotreload, чтобы сам блзор не перезагружался -->
+    <None Include="wwwroot\css\**\*.less" />
+    <!-- //Для hotreload -->
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AntDesign" Version="0.10.1" />
+    <PackageReference Include="AntDesign.Charts" Version="0.2.1" />
+	<PackageReference Include="Blazored.LocalStorage" Version="4.1.5" />
+	<PackageReference Include="Blazored.TextEditor" Version="1.0.7" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
+	<PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.0" />
+	<PackageReference Include="Remote.Linq" Version="7.0.0" />
+	<PackageReference Include="Remote.Linq.Newtonsoft.Json" Version="7.0.0" />
+	<PackageReference Include="Remote.Linq.Text.Json" Version="7.0.0" />
+	<PackageReference Include="Toolbelt.Blazor.HttpClientInterceptor" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppShared\AppShared.csproj" />
+    <ProjectReference Include="..\BlastCore\BlastCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+  <!-- Для hotreload, чтобы сам блзор не перезагружался -->
+    <Watch Remove="wwwroot\**\*.less" />
+    <Watch Remove="wwwroot\**\*.css.map" />
+    <!-- //Для hotreload -->
+  </ItemGroup>
+
+  
+
+</Project>

@@ -1,0 +1,36 @@
+﻿
+<Upload Action="@ActionUrl"
+        Name="file"
+        Drag
+        Headers="@headers"
+        Multiple="@false"
+        ShowUploadList=@(true || MaxCount!=1)
+        @bind-FileList="@fileList"
+        OnChange="HandleChange"
+        Data="upload_data"
+        ShowButton="fileList?.Count < MaxCount"
+        ListType="picture-card"
+        Accept="@Accept"
+        BeforeUpload="BeforeUpload"
+        OnRemove="_onRemove"
+        OnSingleCompleted="OnSingleCompleted"
+        Class="1upload-list-inline"
+        >
+
+
+        @*<div class="w-100">
+        <p class="ant-upload-drag-icon">
+        <Icon Type="inbox" />
+        </p>
+        <p class="ant-upload-text">
+        Щелкните или перетащите файл в эту область, чтобы загрузить</p>
+        <p class="ant-upload-hint">
+        Поддержка одиночной или массовой загрузки.
+        </p>
+        </div>*@
+        <div>
+            <Icon Type="plus"></Icon>
+            <div className="ant-upload-text">Загрузка файла</div>
+        </div>
+    
+</Upload>

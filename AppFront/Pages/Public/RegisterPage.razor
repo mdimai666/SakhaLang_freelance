@@ -1,0 +1,168 @@
+@page "/Register"
+@layout BlankLayout
+
+<div class="content-wrapper">
+    <div class="content-header row">
+    </div>
+    <div class="content-body">
+        <div class="auth-wrapper auth-v1 px-2 xcenter">
+            <div class="spacer-3"></div>
+            <div class="auth-inner py-2" style="width:400px;">
+                <!-- Register v1 -->
+                <div class="card mb-0">
+                    <div class="card-body">
+                        <a href="/" class="brand-logo">
+
+                            <div class="text-center">
+                                <img src="/img/logo.png" />
+                            </div>
+
+                        </a>
+
+                        <div class="spacer-2"></div>
+
+                        <h4 class="card-title mb-1">Регистрация</h4>
+                        <p class="card-text mb-2">Общереспубликанское движение добрых дел «МОЯ ЯКУТИЯ В XXI ВЕКЕ»</p>
+
+                        @if (Q.Site.SysOptions.AllowUsersSelfRegister == false)
+                        {
+                            <Alert>Самостоятельная регистрация недоступна</Alert>
+                        }
+                        else if (!regiterComplete)
+                        {
+
+                            <EditForm Model="_userForRegistration" OnValidSubmit=ExecuteRegister
+                                  class="auth-register-form mt-2">
+                                <DataAnnotationsValidator />
+                                <ValidationSummary />
+
+                                @if (ShowRegistrationErrors)
+                                {
+                                    <div class="alert alert-danger p-1" role="alert">
+                                        @foreach (var error in Errors)
+                                        {
+                                            <p>@error</p>
+                                        }
+                                    </div>
+                                }
+
+                                @* <div class="form-group">
+                                    <label class="form-label" for="login-email">Email</label>
+                                    <InputText class="form-control hide-valid-style" id="login-email" type="text"
+                                    name="login-email" placeholder="john@example.com" aria-describedby="login-email"
+                                    autofocus="" tabindex="1" @bind-Value=auth.Login />
+                                    <span id="login-email-error" class="error">
+                                    <ValidationMessage For="@(()=> auth.Login)" />
+                                    </span>
+                                    </div> *@
+
+                                @* ---------------- *@
+
+                                @* <div class="form-group">
+                                    <label for="register-username" class="form-label">Username</label>
+                                    <InputText type="text" class="form-control" id="register-username" name="register-username"
+                                    placeholder="johndoe" aria-describedby="register-username" tabindex="1" autofocus />
+                                    </div> *@
+                                <div class="form-group">
+                                    <label for="register-email" class="form-label">Email</label>
+                                    <InputText type="text" class="form-control" id="register-email" name="register-email"
+                                           placeholder="mail@example.com" aria-describedby="register-email" tabindex="2"
+                                           @bind-Value=_userForRegistration.Email />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="register-password" class="form-label">Пароль</label>
+
+                                    <div class="input-group input-group-merge form-password-toggle">
+                                        <InputText type="password" class="form-control form-control-merge"
+                                               id="register-password" name="register-password" placeholder=""
+                                               aria-describedby="register-password" tabindex="3"
+                                               @bind-Value=_userForRegistration.Password />
+                                        @* <div class="input-group-append">
+                                            <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+                                            </div> *@
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="register-password" class="form-label">Подтверждение пароля</label>
+
+                                    <div class="input-group input-group-merge form-password-toggle">
+                                        <InputText type="password" class="form-control form-control-merge"
+                                               id="register-password" name="register-password" placeholder=""
+                                               aria-describedby="register-password" tabindex="3"
+                                               @bind-Value=_userForRegistration.ConfirmPassword />
+                                        @* <div class="input-group-append">
+                                            <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+                                            </div> *@
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="register-privacy-policy"
+                                           tabindex="4" @bind-value=_acceptPrivacy />
+                                        <label class="custom-control-label" for="register-privacy-policy">
+                                            Я согласен с <a href="/privacy">
+                                                политикой и условиями
+                                                конфиденциальности
+                                            </a>
+                                        </label>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-block" tabindex="5" disabled=@(!_acceptPrivacy)>Зарегистрироваться</button>
+                                @* ---------------- *@
+
+                            </EditForm>
+
+
+                            <p class="text-center mt-2">
+                                <span>Уже есть аккаунт?</span>
+                                <a href="/Login">
+                                    <span>Войти</span>
+                                </a>
+                            </p>
+                        }
+                        else
+                        {
+                            <Result Status="success"
+                                Title="Вы успещно зарегестрированы"
+                                SubTitle="Вы можете войти в свой аккаунт">
+                                <Extra>
+                                    <a href="login">
+                                        <Button Type="primary">Войти</Button>
+                                    </a>
+                                </Extra>
+
+                            </Result>
+                        }
+
+                        @if (false)
+                        {
+
+                            <div class="divider my-2">
+                                <div class="divider-text">or</div>
+                            </div>
+
+                            <div class="auth-footer-btn d-flex justify-content-center">
+                                <a href="javascript:void(0)" class="btn btn-facebook">
+                                    <i data-feather="facebook"></i>
+                                </a>
+                                <a href="javascript:void(0)" class="btn btn-twitter white">
+                                    <i data-feather="twitter"></i>
+                                </a>
+                                <a href="javascript:void(0)" class="btn btn-google">
+                                    <i data-feather="mail"></i>
+                                </a>
+                                <a href="javascript:void(0)" class="btn btn-github">
+                                    <i data-feather="github"></i>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <!-- /Register v1 -->
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,41 @@
+﻿@inject IStringLocalizer<AppRes> L
+
+<div class="">
+    <ul class="nav nav-pills">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/data/Lesson">
+                @(L["Lesson"])
+            </NavLink>
+        </li>
+    <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/data/Playlist">
+                @(L["Playlist"])
+            </NavLink>
+        </li>
+    <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/data/LessonCategory">
+                @(L["LessonCategory"])
+            </NavLink>
+        </li>
+    @*<li class="nav-item px-3">
+            <NavLink class="nav-link" href="/data/School">
+                @(L["School"])
+            </NavLink>
+        </li>*@
+    <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/data/SchoolClass">
+                @(L["SchoolClass"])
+            </NavLink>
+        </li>
+    <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/data/SchoolClassPost">
+                @(L["SchoolClassPost"])
+            </NavLink>
+        </li>
+    <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/data/SchoolPost">
+                @(L["SchoolPost"])
+            </NavLink>
+        </li>
+    </ul>
+</div>

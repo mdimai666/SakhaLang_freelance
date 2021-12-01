@@ -1,0 +1,132 @@
+﻿@page "/RoleManagement"
+@using AppShared.Dto
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+@inject IStringLocalizer<AppRes> L
+
+<div class="content-wrapper">
+
+    <h3>Управление ролями</h3>
+    <hr />
+
+    <div class="text-right">
+        <Button Type=@ButtonType.Primary OnClick=SaveClick>
+            <Icon Type="save"></Icon>
+            Сохранить
+        </Button>
+    </div>
+
+    <div class="spacer-1"></div>
+
+    @if (false)
+    {
+        <Table @ref="table"
+           TItem="Role"
+           DataSource="@Items"
+           Total="_total"
+           @bind-PageIndex="_pageIndex"
+           @bind-PageSize="_pageSize"
+           OnChange="OnChange">
+            @{
+                var city = context;
+            }
+
+            @*<Column @bind-Field="@context.Id" Sortable />*@
+            <Column @bind-Field="@context.Name" Sortable Title="Название">
+                <div>
+                    @*<a @onclick="()=>OpenModalEdit(city)" class="text-accent">@context.Name</a>*@
+                    @*<span class="car-number ml-2">@context.CarNumber</span>*@
+                </div>
+                <div>
+                    @*<span class="text-secondary">@context.Location</span>*@
+                </div>
+            </Column>
+        </Table>
+    }
+
+
+    <BasicPage TModel=EditRolesViewModelDto @bind-model=@model Context=model LoadFunc=@(()=>service.EditRolesViewModel())>
+        <div class="d-flex">
+            <div style="width: 200px;" class="border-right">
+                @*<AntList Bordered DataSource="@model.Roles" Size="small">
+                    <Header>Роли</Header>
+                    <ChildContent Context="item">
+                    <ListItem>
+                    <span><Text>@(L[item.Name])</Text></span>
+                    </ListItem>
+                    </ChildContent>
+
+                    </AntList>*@
+
+                <div>
+                    Ролей (@model.Roles.Count())
+                </div>
+
+                <RadioGroup @bind-Value="@selRoleClaim" TValue=RoleClaimsDto>
+                    @foreach (var role in model.RoleClaims)
+                    {
+                        <Radio TValue=RoleClaimsDto Value="@(role)" Class="d-block h3">
+                            @(L[role.Role.Name])
+                        </Radio>
+                    }
+                </RadioGroup>
+
+            </div>
+            <div class="pl-4">
+                @*@foreach(var roleClaim in model.RoleClaims){
+                    <div>
+                    <h4>@(L[roleClaim.Role.Name]</h4>
+
+                    @fore
+                    <div class="v-for">
+
+                    </div>
+                    </div>
+                    }*@
+
+                @*@foreach (var model in selRoleClaim.Models)*@
+
+                @if (selRoleClaim is null)
+                {
+                    <div class="h-5">
+                        Выберите
+                    </div>
+                }
+                else
+                {
+                    <div class="h3">
+                        @(L[selRoleClaim.Role.Name])
+                    </div>
+                    <hr />
+                    @foreach (var model in selRoleClaim.Models)
+                    {
+                        <div>
+                            <h4>@(L[model.Model+".many"])</h4>
+
+                            @foreach (var cl in model.Claims)
+                            {
+                                <div class="v-for">
+                                    <Checkbox @bind-Value=cl.IsCheck>
+                                        @cl.Title
+                                    </Checkbox>
+                                </div>
+
+                            }
+                        </div>
+                    }
+                }
+
+            </div>
+        </div>
+    </BasicPage>
+
+</div>
+
+
+@code {
+    EditRolesViewModelDto model;
+
+    RoleClaimsDto selRoleClaim = null;
+
+
+}

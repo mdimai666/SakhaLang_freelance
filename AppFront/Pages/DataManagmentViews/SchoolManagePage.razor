@@ -1,0 +1,50 @@
+﻿@page "/data/School"
+@using System.Linq.Expressions
+@inject IStringLocalizer<AppRes> L
+@*@inherits StandartEditForm1<School,SchoolService>*@
+
+<h1>Настройки</h1>
+
+<AppFront.Pages.DataManagmentViews.SchoolManageTabs />
+<hr>
+
+
+
+<h3>@(L["School.many"])</h3>
+
+@*<DSelectGuidServ @bind-Value=@selGeoTypeId
+    LabelExpression=@(s=>s.Title)
+    TService=GeoLocationTypeService TModel=SchoolType />*@
+
+<StandartManagementTable TModel=School TService=SchoolService @ref=f SearchExpression=search>
+    <TableContent>
+        <Column @bind-Field=@context.Title Sortable>
+            <a @onclick=@(e=>f.EditClick(context)) class="text-primary">
+                @context.Title
+            </a>
+        </Column>
+        <Column @bind-Field=@context.Created Format="yyyy-MM-dd" Sortable Title="Создан" />
+    </TableContent>
+
+    <FormContent>
+        <FormItem>
+            <AntDesign.Input @bind-Value="@context.Title" />
+        </FormItem>
+        <FormItem>
+            <AntDesign.TextArea Rows=2 @bind-Value="@context.Excerpt" />
+        </FormItem>
+        <FormItem>
+            <AntDesign.TextArea Rows=4 @bind-Value="@context.Content" />
+        </FormItem>
+    </FormContent>
+</StandartManagementTable>
+
+
+@code {
+    StandartManagementTable<School, SchoolService> f;
+
+    Guid selGeoTypeId;
+
+    Expression<Func<School, bool>> search =>
+        model => model.Title.ToLower().Contains(f.SearchText.ToLower());
+}

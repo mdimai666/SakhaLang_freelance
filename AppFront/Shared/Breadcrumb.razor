@@ -1,0 +1,43 @@
+<div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+        @* <li class="breadcrumb-item"><a href="index.html">Home</a>
+            </li>
+            <li class="breadcrumb-item"><a href="#">Pages</a>
+            </li>
+            <li class="breadcrumb-item active">Profile2
+            </li> *@
+        @foreach (var item in items)
+        {
+            bool isLast = item == items.LastOrDefault();
+            if (String.IsNullOrEmpty(item.Url) || isLast)
+            {
+                string _class = isLast ? "active" : "";
+                <li class="breadcrumb-item @_class">@item.Text</li>
+            }
+            else
+            {
+                <li class="breadcrumb-item">
+                    <a href=@item.Url>@item.Text</a>
+                </li>
+            }
+        }
+    </ol>
+</div>
+
+@code {
+
+    @* Usage *@
+    @* <Breadcrumb Path=":Home|/Pages:Pages|/Profile"/> *@
+
+    [Parameter]
+    public string Path { get; set; }
+
+    List<Models.BreadcrumbItem> items;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        items = Models.BreadcrumbItem.ListFromString(Path);
+
+    }
+}

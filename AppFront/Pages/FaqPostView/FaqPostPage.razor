@@ -1,0 +1,57 @@
+﻿@page "/faq"
+
+@inject IJSRuntime JS
+
+<div class="content-wrapper">
+    <div class="content-header row">
+    </div>
+    <h1>Вопросы и ответы</h1>
+    <hr>
+
+    <div class="text-right">
+    </div>
+
+
+    @if (Items == null)
+    {
+        <Loader1 />
+    }
+    else if (Items.Count == 0)
+    {
+        <ContentNoRecords />
+    }
+    else
+    {
+        <AntList DataSource="@Items" Context="item" Class="">
+
+            <Collapse DefaultActiveKey="@(new[] { "" })">
+
+                <Panel Key="@item.Id.ToString()">
+                    <HeaderTemplate>
+                        <h4 class="d-inline">
+                            @item.Title
+                        </h4>
+                    </HeaderTemplate>
+                    <ChildContent>
+                        <div>
+                            @((MarkupString)item.Content)
+                        </div>
+                    </ChildContent>
+                </Panel>
+            </Collapse>
+
+        </AntList>
+    }
+
+
+</div>
+
+@code {
+
+    RenderFragment avatar =
+    @<Avatar Src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></Avatar>
+    ;
+
+
+}
+

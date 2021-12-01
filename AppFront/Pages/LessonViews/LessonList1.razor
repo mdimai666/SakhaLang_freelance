@@ -1,0 +1,59 @@
+﻿@if (Items == null)
+{
+    <Loader1 />
+}
+else if (Items.Count == 0)
+{
+    <ContentNoRecords />
+}
+else
+{
+    <AntList DataSource="@Items" ItemLayout="@ListItemLayout.Vertical">
+        <ChildContent Context="item">
+            <ListItem>
+                @*Actions="@(new[] { iconText(("start","156")),iconText(("like","156")),iconText(("message","2")) })"*@
+
+                <Extra>
+                    @*<img width="272" alt="logo" src="@item.Image" />*@
+
+                </Extra>
+
+                <ChildContent>
+                    <div class="d-flex ">
+                        <div class="mr-3" style="width:272px">
+                            @if (!string.IsNullOrEmpty(item.Image))
+                        {
+                            @*<Image Width="272px" Src=@(item.FileList.ElementAt(0).FileUrl) />*@
+                            <img width="272" alt="logo" src=@(item.Image) />
+                        }
+                        else
+                        {
+                            <div style="display:block;width:272px;height:200px;background:lightgrey;">
+                            </div>
+                        }
+                    </div>
+                    <div class="flex-fill">
+                        <ListItemMeta>
+                            <TitleTemplate>
+                                <div class="text-secondary">@item.Created.ToShortDateString()</div>
+                                <a href="/news/@item.Id">@item.Title</a>
+                            </TitleTemplate>
+                            <DescriptionTemplate>
+                                <div class="text-black">
+                                    @{
+                                        string text = item.Content.StripHTML();
+                                        if (text.Length > 100) text = text.Substring(0, 100);
+                                    }
+                                    @(text)
+                                </div>
+                            </DescriptionTemplate>
+                        </ListItemMeta>
+                    </div>
+                </div>
+
+
+            </ChildContent>
+        </ListItem>
+    </ChildContent>
+</AntList>
+}

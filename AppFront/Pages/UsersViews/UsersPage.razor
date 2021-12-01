@@ -1,0 +1,192 @@
+@page "/Users"
+@using AppShared.Dto
+@inject IStringLocalizer<AppRes> L
+
+
+<div class="content-wrapper">
+
+    <h1>Пользователи</h1>
+    <hr>
+
+
+    @if (Busy)
+    {
+        <Loader1 />
+    }
+    else if (vm is null)
+    {
+        <div>Нет данных</div>
+    }
+    else
+    {
+        <div class="text-right mb-3">
+            <AuthorizeView Roles="Admin">
+                <Button Type="@ButtonType.Primary" OnClick=AddClick>Создать пользователя</Button>
+
+            </AuthorizeView>
+        </div>
+
+        <div>
+            <span class="mr-1">Выберите роль </span>
+            <Cascader @bind-Value="@_selRoleId" Options="roleCascader" AllowClear=false
+                  OnChange=@((x,s1,s2) => SelectContestInDropDown(s1)) />
+            <Space />
+
+            <div class=spacer-1></div>
+
+            <div class="ml-auto" style="">
+                <Search Placeholder="Поиск" @bind-Value=filter_Search AllowClear OnChange=@(s=>RefresTable())
+                    WrapperStyle="display:inline-block;width:300px;" />
+
+                @* <AuthorizeView Roles="Admin">
+                    <a href="/contest/editlist/@_selRoleId">
+                    <Button Icon="edit">Редактировать участников</Button>
+                    </a>
+                    <Space />
+                    </AuthorizeView>*@
+                @*<a href="/api/Contest/DownloadExcel/@_selContestId">
+                    <Button Icon="download">Скачать Excel</Button>
+                    </a>*@
+
+
+            </div>
+        </div>
+
+        <div class=spacer-2></div>
+
+        @*@if (string.IsNullOrEmpty(_selRoleId) == false)*@
+        @if (true)
+        {
+
+            <Table @ref="table"
+           TItem="UserRoleDto"
+           DataSource="@ItemsFiltered"
+           Total="_total"
+           @bind-PageIndex="_pageIndex"
+           @bind-PageSize="_pageSize"
+           HidePagination
+           OnChange="OnChange">
+                @{
+                    var zayavka = context;
+                }
+
+                @*<Column @bind-Field="@context.Id" Sortable />*@
+                <Column Field="@context.FullName" Title="ФИО">
+                    <div>
+                        <a href="/EditUser/@context.Id" class="text-accent">@context.FullName</a>
+                        @*<span class="car-number ml-2">@context.CarNumber</span>*@
+                    </div>
+                    <div>
+                        <span class="text-secondary">@context.City</span>
+                    </div>
+                </Column>
+
+                <Column @bind-Field="@context.Email" Sortable Title="Email" />
+                <Column @bind-Field="@context.Created" Format="yyyy-MM-dd" Sortable Title="Создан" />
+                @*<Column @bind-Field="@context.Modified" Format="yyyy-MM-dd" Sortable Title="modify" />*@
+
+                @* <Column @bind-Field="@context.Status" Sortable Title="Статус">
+                    <div>
+                    <StatusBag Status=context.Status/>
+                    </div>
+                    </Column>*@
+
+                <Column Field="@context.Roles" Title="Роли">
+                    <div>
+                        @foreach (var role in context.Roles)
+                {
+                    <Tag>@L[role.Name]</Tag>
+                }
+            </div>
+        </Column>
+
+
+        <ActionColumn Title="Действия">
+            <Space>
+                @if (context.LockoutEnabled)
+                        {
+                            <Popconfirm Title="Вы уверены что хотите включить пользователя?"
+                            OnConfirm="()=> DisableUser(context.Id, false)"
+                            OkText="Да"
+                            CancelText="Нет">
+                                <Button Size="small">Включить</Button>
+                            </Popconfirm>
+                        }
+                        else
+                        {
+                            <Popconfirm Title="Вы уверены что хотите отключить пользователя?"
+                            OnConfirm="()=> DisableUser(context.Id,true)"
+                            OkText="Да"
+                            CancelText="Нет">
+                                <Button Danger Size="small">Отключить</Button>
+                            </Popconfirm>
+                        }
+
+
+                    </Space>
+                </ActionColumn>
+            </Table>
+
+            <br />
+            <PagesTotal Page=_pageIndex PageSize=_total TotalPages=_total />
+
+        }
+        else
+        {
+            <h3>Выберите роль</h3>
+        }
+    }
+
+
+</div>
+
+<Modal Title="Создание пользователя"
+       Visible="_visible"
+       OnOk="@HandleOk"
+       OkText=@("Создать")
+       ConfirmLoading="_modeCreareButtonLoading"
+       OnCancel="@HandleCancel">
+
+    <div class="p-4">
+
+        <AntDesign.Form Model=@model Layout="@FormLayout.Vertical" @ref=@form>
+            <FormItem>
+                <AntDesign.Input @bind-Value="@model.FirstName" />
+            </FormItem>
+            <FormItem>
+                <AntDesign.Input @bind-Value="@model.LastName" />
+            </FormItem>
+            <FormItem>
+                <AntDesign.Input @bind-Value="@model.Email" />
+            </FormItem>
+            <FormItem>
+                <AntDesign.Input @bind-Value="@model.Password" />
+            </FormItem>
+
+            <Select Mode="multiple"
+                    Placeholder="Роли"
+                    @*@bind-Values="@_selUserRoles" *@
+                    @bind-Values="@model.Roles"
+                    TItemValue="Guid"
+                    TItem="Guid"
+                    @*OnSelectedItemsChanged="OnSelectedRoleItemsChangedHandler" *@
+                    Style="width: 100%; margin-bottom: 8px;"
+                    EnableSearch
+                    AllowClear>
+                <SelectOptions>
+                    @foreach (var item in vm.Roles)
+                    {
+                        <SelectOption TItemValue="Guid"
+                                  TItem="Guid"
+                                  Value=@item.Id
+                                  Label=@L[item.Name] />
+                    }
+                </SelectOptions>
+            </Select>
+        </AntDesign.Form>
+
+    </div>
+
+</Modal>
+
+

@@ -1,0 +1,131 @@
+﻿@page "/"
+
+@using AntDesign.Charts
+
+@inject ViewModelService viewModelService
+
+<div class="content-wrapper">
+
+    <h1>Главная</h1>
+    <hr>
+
+    <h4>Последние уроки</h4>
+
+
+    <div style="" class="slider multiple-items">
+        @foreach (var item in lessons)
+        {
+            @*<Card Bordered Title="@(item.Title)" Style="width:300px;display:inline-block;">
+                <Body>
+
+                <Card Hoverable Style="width: 240px">
+                <Cover>
+                <img alt="example" src="@item.Image" />
+                </Cover>
+
+                <ChildContent>
+                <CardMeta Title="@item.Title" Description="@item.Content" />
+                </ChildContent>
+                </Card>
+
+                </Body>
+                </Card>*@
+
+            <div class="p-2 " style="width:320px;">
+                <a class="card d-inline-block1 " href="/Lesson/@item.Id">
+                    <div class="embed-responsive embed-responsive-4by3">
+                        @if (!string.IsNullOrEmpty(item.Image))
+                        {
+                            @*<img class="card-img-top" src="@item.Image" alt="Card image">*@
+                            <div class="embed-responsive-item card-img-top bg" 
+                                style="display:block;background-color:white;background-image:url('@item.Image')">
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="embed-responsive-item card-img-top" style="display:block;background:lightgrey;">
+                            </div>
+                        }
+                    </div>
+                    <div class="card-body p-2">
+                        <div class="float-right">
+                            @if (Q.User.IsAdmin)
+                            {
+                                <a href="/Lesson/Edit/@item.Id"><i class="fas fa-edit"></i></a>
+                            }
+                        </div>
+                        <h6 class="card-title" style="1text-overflow: ellipsis;1white-space: nowrap;">@Limit(item.Title,7)</h6>
+                        
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+
+    <div class="spacer-2"></div>
+    <h4>Категории</h4>
+
+    <AppFront.Pages.CategoryViews.CategoryList2 />
+    @*<AppFront.Pages.LessonViews.LessonList1 />*@
+
+    <div class="spacer-2"></div>
+    <h4>Новости</h4>
+
+    <AppFront.Pages.NewsView.NewsList1 />
+
+    @*@if (Items == null)
+        {
+        <Loader1/>
+        }
+        else if(Items.Count == 0)
+        {
+        <ContentNoRecords/>
+        }
+        else
+        {
+        <AntList DataSource="@Items" Context="item">
+        <ListItem>
+        <ListItemMeta>
+        <TitleTemplate>
+        <h2>
+        <a href="/news/@item.Id">@item.Title</a>
+        </h2>
+        </TitleTemplate>
+        <AvatarTemplate>
+        @if (item.FileList?.Count > 0)
+        {
+        <Image Width="200px" Src=@(item.FileList.ElementAt(0).FileUrl) />
+        } else {
+        <div style="display:block;width:200px;height:200px;background:lightgrey;">
+        </div>
+        }
+        </AvatarTemplate>
+        <DescriptionTemplate>
+        <div>@item.Created</div>
+        <div class="text-black">
+        @{
+        string text = item.Content.StripHTML();
+        if(text.Length>100) text = text.Substring(0,100);
+        }
+        @(text);
+        </div>
+        </DescriptionTemplate>
+        </ListItemMeta>
+        </ListItem>
+        </AntList>
+        }*@
+
+</div>
+
+@code {
+    public ListGridType gutter = new ListGridType { Gutter = 16, Column = 4 };
+
+
+
+    string Limit(string text, int count = 10)
+    {
+        return String.Join(" ", text.Split(' ').Take(count));
+
+    }
+}
+

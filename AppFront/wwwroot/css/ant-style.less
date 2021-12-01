@@ -1,0 +1,200 @@
+﻿
+@primary: @color-accent;
+@primary-hover: #598bfb;
+
+@primary-text: white;
+
+@border-radius: 8px;
+@border-radius-card: 16px;
+
+@menu-hover: @primary;
+@menu-bg: #dae0ef;
+
+@menu-border-radius: 10px;
+
+
+//---------------------------------------
+//INPUT
+//---------------------------------------
+
+.ant-input-number,
+.ant-input {
+    border-radius: 4px;
+}
+
+.ant-input-affix-wrapper-focused, .ant-input-affix-wrapper:focus {
+    border-color: @primary;
+    box-shadow: 0 0 4px 0px @primary-hover;
+}
+
+.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+    border-color: @primary;
+}
+
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border-radius: @border-radius;
+}
+
+.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border-color: @primary;
+    box-shadow: 0 0 4px 0px @primary-hover;
+}
+
+.ant-select:not(.ant-select-disabled):hover .ant-select-selector {
+    border-color: @primary;
+}
+
+.ant-layout-content {
+    border-radius: @border-radius-card;
+}
+
+
+//---------------------------------------
+//MENU
+//---------------------------------------
+.ant-menu-item a:hover,
+.ant-menu-item-selected a, .ant-menu-item-selected a:hover {
+    color: @menu-hover;
+}
+
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: @menu-bg;
+    border-radius: @menu-border-radius;
+}
+
+.ant-menu-light .ant-menu-item-active, .ant-menu-light .ant-menu-item:hover, .ant-menu-light .ant-menu-submenu-active, .ant-menu-light .ant-menu-submenu-title:hover, .ant-menu-light .ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open {
+    background-color: @menu-bg;
+    border-radius: @menu-border-radius;
+    color: @menu-hover;
+}
+
+.ant-menu-vertical .ant-menu-submenu-selected, .ant-menu-vertical-left .ant-menu-submenu-selected, .ant-menu-vertical-right .ant-menu-submenu-selected {
+    color: @primary;
+}
+
+.ant-menu-submenu > .ant-menu {
+    border-radius: @menu-border-radius;
+}
+
+//---------------------------------------
+//BTN2
+//---------------------------------------
+.ant-btn {
+    border-radius: @border-radius;
+    box-shadow: 0 0 2px 0px rgba(0,0,0,0.2);
+}
+
+.ant-btn:focus, .ant-btn:hover {
+    border-color: @primary;
+}
+.ant-btn.ant-btn-primary:focus, .ant-btn.ant-btn-primary:hover {
+    color: @primary-text;
+}
+
+.ant-btn-primary,
+.ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+    color: #fff;
+    background: @primary;
+    border-color: @primary;
+}
+
+.ant-btn-primary:focus, .ant-btn-primary:hover,
+.ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
+    background: @primary-hover;
+    border-color: @primary-hover;
+}
+
+
+//---------------------------------------
+//INPUT
+//---------------------------------------
+.ant-input:hover {
+    border-color: @primary;
+}
+
+.ant-input-focused, .ant-input:focus {
+    border-color: @primary;
+    box-shadow: 0 0 4px 0px @primary-hover;
+}
+
+.ant-input-number:hover {
+    border-color: @primary;
+    border-right-width: 1px !important;
+}
+
+.ant-input-number-focused, .ant-input-number:focus {
+    border-color: @primary;
+    box-shadow: 0 0 4px 0px @primary-hover;
+}
+
+.ant-upload.ant-upload-drag:not(.ant-upload-disabled):hover {
+    border-color: @primary;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner {
+    background: @primary-hover;
+    border-color: @primary-hover;
+}
+
+.ant-checkbox-input:focus + .ant-checkbox-inner, .ant-checkbox-wrapper:hover .ant-checkbox-inner, .ant-checkbox:hover .ant-checkbox-inner {
+    border-color: @primary-hover;
+}
+
+.ant-checkbox-checked::after {
+    border-color: @primary-hover;
+}
+
+
+//---------------------------------------
+//CARD
+//---------------------------------------
+.ant-collapse-item,
+.ant-collapse {
+    border-radius: @border-radius-card;
+}
+
+.ant-collapse > .ant-collapse-item:last-child, .ant-collapse > .ant-collapse-item:last-child > .ant-collapse-header {
+    border-radius: @border-radius-card;
+    overflow: hidden;
+}
+
+
+//---------------------------------------
+//FONT
+//---------------------------------------
+// .form-control {
+//   border-color: @color-accent;
+// }
+.ant-form-item-label > label,
+.ant-input-number,
+.ant-form {
+    font-size: 16px;
+}
+
+/*.ant-btn,*/
+.ant-picker-input > input {
+    font-size: 16px;
+}
+
+.ant-btn {
+    /*height:unset;*/
+    font-size: 16px;
+    height: 38px;
+}
+
+.ant-input {
+    font-size: 18px;
+}
+
+.ant-cascader-menus,
+.ant-cascader-picker {
+    font-size: 16px;
+}
+
+.ant-btn-icon-only {
+    width: 39px;
+}
+
+button, input, optgroup, select, textarea {
+    font-size: 16px;
+}

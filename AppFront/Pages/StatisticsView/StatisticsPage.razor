@@ -1,0 +1,182 @@
+﻿@page "/statistic"
+
+@using AntDesign.Charts
+
+@inject ViewModelService viewModelService
+
+<div class="content-wrapper">
+
+    <h1>Статистика</h1>
+    <hr>
+    @if (vm == null)
+    {
+        <Row Type="flex" Gutter="24">
+            <AntDesign.Col Xs="24" Sm="12" Md="12" Lg="12" Xl="6" Style="margin-bottom: 24px;">
+                <Skeleton Avatar="true" ParagraphRows="4"></Skeleton>
+            </AntDesign.Col>
+            <AntDesign.Col Xs="24" Sm="12" Md="12" Lg="12" Xl="6" Style="margin-bottom: 24px;">
+                <Skeleton Avatar="true" ParagraphRows="4"></Skeleton>
+            </AntDesign.Col>
+            <AntDesign.Col Xs="24" Sm="12" Md="12" Lg="12" Xl="6" Style="margin-bottom: 24px;">
+                <Skeleton Avatar="true" ParagraphRows="4"></Skeleton>
+            </AntDesign.Col>
+            <AntDesign.Col Xs="24" Sm="12" Md="12" Lg="12" Xl="6" Style="margin-bottom: 24px;">
+                <Skeleton Avatar="true" ParagraphRows="4"></Skeleton>
+            </AntDesign.Col>
+        </Row>
+    }
+    else
+    {
+        <Row Type="flex" Gutter="24">
+            <AntDesign.Col Xs="24" Sm="12" Md="12" Lg="12" Xl="6" Style="margin-bottom: 24px;">
+                <ChartCard Title="@vm.b1.Title"
+                       Total="@vm.b1.MainValue"
+                       ContentHeight="46">
+                    <ChildContent>
+                        @*<Trend Flag="up">*@
+                        <div Flag="">
+                            новые объекты
+                            <span class="trendText">@vm.b1.Row1</span>
+                        </div>
+                        <div Flag="">
+                            переходящие объекты
+                            <span class="trendText">@vm.b1.Row2</span>
+                        </div>
+                    </ChildContent>
+                    <Footer>
+                        <Field Label="@vm.b1.FooterText" Value="@vm.b1.FooterValue" />
+                    </Footer>
+                </ChartCard>
+            </AntDesign.Col>
+            <AntDesign.Col Xs="24" Sm="12" Md="12" Lg="12" Xl="6" Style="margin-bottom: 24px;">
+                <ChartCard Title="@vm.b2.Title"
+                       Total="@vm.b2.MainValue"
+                       ContentHeight="46">
+                    <ChildContent>
+                        <MiniArea />
+                    </ChildContent>
+                    <Footer>
+                        <Field Label="@vm.b2.FooterText" Value="@vm.b2.FooterValue" />
+                    </Footer>
+                </ChartCard>
+            </AntDesign.Col>
+            <AntDesign.Col Xs="24" Sm="12" Md="12" Lg="12" Xl="6" Style="margin-bottom: 24px;">
+                <ChartCard Title="@vm.b3.Title"
+                       Total="@vm.b3.MainValue"
+                       ContentHeight="46">
+                    <ChildContent>
+                        @*<MiniBar />*@
+                    </ChildContent>
+                    <Footer>
+                        <Field Label="@vm.b3.FooterText" Value="@vm.b3.FooterValue" />
+                    </Footer>
+                </ChartCard>
+            </AntDesign.Col>
+            <AntDesign.Col Xs="24" Sm="12" Md="12" Lg="12" Xl="6" Style="margin-bottom: 24px;">
+                <ChartCard Title="@vm.b4.Title"
+                       Total="@vm.b4.MainValue"
+                       ContentHeight="46">
+                    <ChildContent>
+                        <MiniProgress Percent="78"
+                                  StrokeWidth="8"
+                                  Target="80"
+                                  Color="#13C2C2" />
+                    </ChildContent>
+                    <Footer>
+                        <Field Label="@vm.b4.FooterText" Value="@vm.b4.FooterValue" />
+                    </Footer>
+                </ChartCard>
+            </AntDesign.Col>
+        </Row>
+    }
+
+
+
+    <div style="" class="slider multiple-items">
+        @foreach (var item in news)
+        {
+            @*<Card Bordered Title="@(item.Title)" Style="width:300px;display:inline-block;">
+                <Body>
+
+                <Card Hoverable Style="width: 240px">
+                <Cover>
+                <img alt="example" src="@item.Image" />
+                </Cover>
+
+                <ChildContent>
+                <CardMeta Title="@item.Title" Description="@item.Content" />
+                </ChildContent>
+                </Card>
+
+                </Body>
+                </Card>*@
+
+            <div class="p-2 " style="width:320px;">
+                <a class="card d-inline-block1 " href=@($"{item.Excerpt}") target="_blank">
+                    <img class="card-img-top" src="@item.Image" alt="Card image">
+                    <div class="card-body">
+                        <h6 class="card-title" style="1text-overflow: ellipsis;1white-space: nowrap;">@Limit(item.Title,7)</h6>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+
+    <AppFront.Pages.NewsView.NewsList1 />
+
+    @*@if (Items == null)
+        {
+        <Loader1/>
+        }
+        else if(Items.Count == 0)
+        {
+        <ContentNoRecords/>
+        }
+        else
+        {
+        <AntList DataSource="@Items" Context="item">
+        <ListItem>
+        <ListItemMeta>
+        <TitleTemplate>
+        <h2>
+        <a href="/news/@item.Id">@item.Title</a>
+        </h2>
+        </TitleTemplate>
+        <AvatarTemplate>
+        @if (item.FileList?.Count > 0)
+        {
+        <Image Width="200px" Src=@(item.FileList.ElementAt(0).FileUrl) />
+        } else {
+        <div style="display:block;width:200px;height:200px;background:lightgrey;">
+        </div>
+        }
+        </AvatarTemplate>
+        <DescriptionTemplate>
+        <div>@item.Created</div>
+        <div class="text-black">
+        @{
+        string text = item.Content.StripHTML();
+        if(text.Length>100) text = text.Substring(0,100);
+        }
+        @(text);
+        </div>
+        </DescriptionTemplate>
+        </ListItemMeta>
+        </ListItem>
+        </AntList>
+        }*@
+
+</div>
+
+@code {
+    public ListGridType gutter = new ListGridType { Gutter = 16, Column = 4 };
+
+
+
+    string Limit(string text, int count = 10)
+    {
+        return String.Join(" ", text.Split(' ').Take(count));
+
+    }
+}
+

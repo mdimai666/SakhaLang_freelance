@@ -1,0 +1,43 @@
+@*@inherits MainLayout*@
+@*@layout MainLayout*@
+@typeparam TModel
+
+@if (LoadFunc == null)
+{
+    <h1>Нет функции загрузки</h1>
+}
+else
+if (Busy)
+{
+    if (WhenLoading == null)
+    {
+        <Loader1 />
+    }
+    else
+    {
+        @WhenLoading
+    }
+}
+else if (Errored)
+{
+    @if (ErrorMessageTemplate != null)
+    {
+        @ErrorMessageTemplate(Error)
+    }
+    else
+    {
+        <AppFront.Shared.Errors.ExceptionMessage Exception="Error" />
+    }
+}
+else if(model is not null)
+{
+
+    @ChildContent(model)
+    @*
+        if(model == null){
+        <p>NULL</p>
+        }*@
+}
+else {
+    <div data-None></div>
+}

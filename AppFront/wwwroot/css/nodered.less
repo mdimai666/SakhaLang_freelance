@@ -1,0 +1,135 @@
+/* UI */
+#red-ui-workspace-chart {
+    overflow: auto;
+    display: block;
+    position: absolute;
+    bottom: 25px;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    box-sizing: border-box;
+    transition: right 0.2s ease;
+}
+
+#red-ui-workspace-chart:focus {
+    outline: none;
+}
+
+.red-ui-workspace-chart-background {
+    fill: #fff;
+
+    background-image: url('/img/bg-red.svg');
+    background-size: 100px;
+}
+
+/* NODES */
+.red-ui-flow-node {
+    stroke: #999;
+    cursor: move;
+    stroke-width: 1;
+}
+
+.red-ui-flow-port {
+    stroke: #999;
+    stroke-width: 1;
+    fill: #d9d9d9;
+    cursor: crosshair;
+}
+
+.red-ui-flow-node-error {
+    fill: #f60;
+    stroke: #911002;
+    stroke-width: 1px;
+    cursor: default;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+.red-ui-flow-node-changed {
+    fill: #00bcff;
+    stroke: #1c668c;
+    cursor: default;
+    stroke-width: 1px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+.red-ui-editor .hide,
+.red-ui-editor-dialog .hide,
+.red-ui-menu .hide,
+.red-ui-popover .hide,
+.red-ui-typedInput-options .hide,
+.red-ui-icon-picker .hide {
+    display: none;
+}
+
+
+.red-ui-flow-node-label .red-ui-flow-node-label-text {
+    dominant-baseline: middle;
+}
+
+.node_label_italic,
+.red-ui-flow-node-label-italic {
+    font-style: italic;
+}
+
+.red-ui-flow-node-label {
+    stroke-width: 0;
+    fill: #333;
+    font-size: 14px;
+    pointer-events: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.red-ui-flow-node-icon-shade {
+    stroke: none;
+    fill: #000;
+    fill-opacity: .05;
+}
+
+.red-ui-flow-node-button-background {
+    fill: #eee;
+}
+
+.red-ui-flow-node-button-button {
+    cursor: pointer;
+}
+
+g.red-ui-flow-node-selected .red-ui-flow-node,
+g.red-ui-flow-node-selected .red-ui-flow-subflow-port {
+    stroke-width: 2;
+    stroke: #ff7f0e !important;
+}
+
+/* line */
+
+.red-ui-flow-link-background {
+    stroke: #fff;
+    opacity: 0;
+    stroke-width: 20;
+    cursor: crosshair;
+    fill: none;
+}
+
+.red-ui-flow-link-outline {
+    stroke: #fff;
+    stroke-opacity: 0.4;
+    stroke-width: 5;
+    cursor: crosshair;
+    fill: none;
+    pointer-events: none;
+}
+
+.red-ui-flow-link-line {
+    stroke: #999;
+    stroke-width: 3;
+    fill: none;
+    pointer-events: none;
+}
+
+/*  */

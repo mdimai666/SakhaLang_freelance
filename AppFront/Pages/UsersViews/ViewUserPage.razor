@@ -1,0 +1,256 @@
+@page "/User"
+@page "/User/{ID:guid}"
+
+@using System.Security.Claims
+@using AppShared.Dto
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserService userService
+@inject IStringLocalizer<AppRes> L
+
+
+<div class="content-wrapper">
+    <BasicPage @bind-model="user" TModel=UserProfileInfoDto Context="user" LoadFunc="()=>userService.UserProfileInfo(ID)">
+        <div class="content-header row">
+        </div>
+        <div class="content-body">
+            <section class="app-user-view">
+                <!-- User Card & Plan Starts -->
+                <div class="row">
+                    <!-- User Card starts-->
+                    <div class="col-xl-9_col-lg-8_col-md-7 col-12">
+                        <div class="card user-card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-12 d-flex flex-column justify-content-between border-container-lg">
+                                        <div class="user-avatar-section">
+                                            <div class="d-flex justify-content-start">
+                                                @*<img class="img-fluid rounded" src="/app-assets/images/avatars/7.png" height="104" width="104" alt="User avatar" />*@
+                                                <Avatar Size="100">A</Avatar>
+                                                <div class="d-flex flex-column ml-3">
+                                                    <div class="user-info mb-1">
+                                                        <h4 class="mb-0">@user.FullName</h4>
+                                                        <span class="card-text">@user.Email</span>
+                                                    </div>
+                                                    <div class="d-flex flex-wrap">
+                                                        <a href="/EditUser/@ID" class="btn btn-primary">Редактировать</a>
+                                                        <button class="btn btn-outline-danger ml-1" disabled>Удалить</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center user-total-numbers mt-3">
+                                            <div class="d-flex align-items-center mr-2">
+                                                <div class="color-box bg-light-primary">
+                                                    <i data-feather="dollar-sign" class="text-primary"></i>
+                                                </div>
+                                                <div class="ml-1">
+                                                    <h5 class="mb-0">@user.ZayavkaCount</h5>
+                                                    <small>Заявок</small>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <div class="color-box bg-light-success">
+                                                    <i data-feather="trending-up" class="text-success"></i>
+                                                </div>
+                                                <div class="ml-1">
+                                                    <h5 class="mb-0">@user.CommentCount</h5>
+                                                    <small>Комментариев</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-12 mt-2 mt-xl-0">
+                                        <div class="user-info-wrapper">
+                                            @*<div class="d-flex flex-wrap">
+                                                <div class="user-info-title mr-2">
+                                                <i data-feather="user" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">Дата рождения</span>
+                                                </div>
+                                                <p class="card-text mb-0">@user.BirthDate.Date</p>
+                                                </div>*@
+                                            @*<div class="d-flex flex-wrap my-50">
+                                                <div class="user-info-title mr-2">
+                                                <i data-feather="check" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">Status</span>
+                                                </div>
+                                                <p class="card-text mb-0">@user.Status</p>
+                                                </div>*@
+                                            <div class="d-flex flex-wrap my-50">
+                                                <div class="user-info-title mr-2">
+                                                    <i data-feather="star" class="mr-1"></i>
+                                                    <span class="card-text user-info-title font-weight-bold mb-0">Роль</span>
+                                                </div>
+                                                <p class="card-text mb-0">
+                                                    @string.Join(',', user.RolesDisplay.Select(s=>L[s]))
+                                                </p>
+                                            </div>
+                                            @*<div class="d-flex flex-wrap my-50">
+                                                <div class="user-info-title mr-2">
+                                                <i data-feather="flag" class="mr-1"></i>
+                                                <span class="card-text user-info-title font-weight-bold mb-0">Город</span>
+                                                </div>
+                                                <p class="card-text mb-0">Якутск</p>
+                                                </div>*@
+                                            <div class="d-flex flex-wrap">
+                                                <div class="user-info-title mr-2">
+                                                    <i data-feather="phone" class="mr-1"></i>
+                                                    <span class="card-text user-info-title font-weight-bold mb-0">Телефон</span>
+                                                </div>
+                                                <p class="card-text mb-0">@user.Phone</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /User Card Ends-->
+                    <!-- Plan Card starts-->
+                    <div class="col-xl-3 col-lg-4 col-md-5 d-none">
+                        <div class="card plan-card border-primary">
+                            <div class="card-header d-flex justify-content-between align-items-center pt-75 pb-1">
+                                <h5 class="mb-0">Current Plan</h5>
+                                <span class="badge badge-light-secondary" data-toggle="tooltip" data-placement="top" title="Expiry Date">
+                                    July 22, <span class="nextYear"></span>
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <div class="badge badge-light-primary">Basic</div>
+                                <ul class="list-unstyled my-1">
+                                    <li>
+                                        <span class="align-middle">5 Users</span>
+                                    </li>
+                                    <li class="my-25">
+                                        <span class="align-middle">10 GB storage</span>
+                                    </li>
+                                    <li>
+                                        <span class="align-middle">Basic Support</span>
+                                    </li>
+                                </ul>
+                                <button class="btn btn-primary text-center btn-block">Upgrade Plan</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Plan CardEnds -->
+                </div>
+                <!-- User Card & Plan Ends -->
+
+                <div class="spacer-2"></div>
+
+                <!-- User Timeline & Permissions Starts -->
+                <div class="row">
+                    <!-- information starts -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title mb-2">Действия пользователя</h4>
+                            </div>
+                            <div class="card-body d-none">
+                                <ul class="timeline">
+                                    <li class="timeline-item">
+                                        <span class="timeline-point timeline-point-indicator"></span>
+                                        <div class="timeline-event">
+                                            <div class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">
+                                                <h6>12 Invoices have been paid</h6>
+                                                <span class="timeline-event-time">12 min ago</span>
+                                            </div>
+                                            <p>Invoices have been paid to the company.</p>
+                                            <div class="media align-items-center">
+                                                <img class="mr-1" src="/app-assets/images/icons/file-icons/pdf.png" alt="invoice" height="23" />
+                                                <div class="media-body">invoice.pdf</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="timeline-item">
+                                        <span class="timeline-point timeline-point-warning timeline-point-indicator"></span>
+                                        <div class="timeline-event">
+                                            <div class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">
+                                                <h6>Client Meeting</h6>
+                                                <span class="timeline-event-time">45 min ago</span>
+                                            </div>
+                                            <p>Project meeting with john @@10:15am.</p>
+                                            <div class="media align-items-center">
+                                                <div class="avatar">
+                                                    <img src="/app-assets/images/avatars/12-small.png" alt="avatar" height="38" width="38" />
+                                                </div>
+                                                <div class="media-body ml-50">
+                                                    <h6 class="mb-0">John Doe (Client)</h6>
+                                                    <span>CEO of Infibeam</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="timeline-item">
+                                        <span class="timeline-point timeline-point-info timeline-point-indicator"></span>
+                                        <div class="timeline-event">
+                                            <div class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">
+                                                <h6>Create a new project for client</h6>
+                                                <span class="timeline-event-time">2 days ago</span>
+                                            </div>
+                                            <p class="mb-0">Add files to new design folder</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title mb-2">Заявки</h4>
+                            </div>
+                            <div class="card-body scroll-y" style="max-height:500px">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- information Ends -->
+                        </div>*@
+                    <!-- User Permissions Ends -->
+                </div>
+                <!-- User Timeline & Permissions Ends -->
+                <!-- User Invoice Starts-->
+                <div class="row mt-3">
+                </div>
+                <!-- /User Invoice Ends-->
+            </section>
+
+        </div>
+    </BasicPage>
+</div>
+
+
+
+
+@code {
+    [Parameter]
+    public Guid ID { get; set; }
+
+    private string _authMessage;
+    private string _userId;
+    private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
+
+    public UserProfileInfoDto user { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await GetClaimsPrincipalData();
+        await base.OnParametersSetAsync();
+    }
+
+    private async Task GetClaimsPrincipalData()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            _authMessage = $"{user.Identity.Name} is authenticated.";
+            _claims = user.Claims;
+            _userId = $"User Id: {user.FindFirst(c => c.Type == "sub")?.Value}";
+        }
+        else
+        {
+            _authMessage = "The user is NOT authenticated.";
+        }
+    }
+}

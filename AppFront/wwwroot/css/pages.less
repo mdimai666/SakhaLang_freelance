@@ -1,0 +1,111 @@
+.car-number {
+    border: 1px solid grey;
+    padding: 0px 4px;
+    display: inline-block;
+    font-size: 0.8em;
+    border-radius: 3px;
+    cursor:default;
+
+    &:hover {
+        color: darkseagreen;
+        border-color: darkseagreen;
+    }
+}
+
+@darke: 20%;
+
+.bg-status-Создана, .bg-status-created1 {
+    @color: #2cb1ff;
+    background-color: @color;
+    border: 1px solid darken(@color,@darke);
+    padding: 0 10px;
+    color: white !important;
+    border-radius: 3px;
+}
+.bg-status-Представлена, .bg-status-created1 {
+    @color: rgb(146, 230, 50);
+    background-color: @color;
+    border: 1px solid darken(@color,@darke);
+    padding: 0 10px;
+    color: white !important;
+    border-radius: 3px;
+}
+.bg-status-Доработка, .bg-status-created1 {
+    @color: rgb(211, 159, 48);
+    background-color: @color;
+    border: 1px solid darken(@color,@darke);
+    padding: 0 10px;
+    color: white !important;
+    border-radius: 3px;
+}
+.bg-status-НаРассмотрении, .bg-status-created1,
+.bg-status-Допущена, .bg-status-created1 {
+    @color: rgb(0, 89, 255);
+    background-color: @color;
+    border: 1px solid darken(@color,@darke);
+    padding: 0 10px;
+    color: white !important;
+    border-radius: 3px;
+}
+.bg-status-Снята, .bg-status-created1 {
+    @color: rgb(197, 56, 56);
+    background-color: @color;
+    border: 1px solid darken(@color,@darke);
+    padding: 0 10px;
+    color: white !important;
+    border-radius: 3px;
+}
+.bg-status-Победила, .bg-status-created1 {
+    @color: rgb(0, 207, 0);
+    background-color: @color;
+    border: 1px solid darken(@color,@darke);
+    padding: 0 10px;
+    color: white !important;
+    border-radius: 3px;
+}
+.bg-status-Реализация, .bg-status-created1 {
+    @color: rgb(6, 182, 0);
+    background-color: @color;
+    border: 1px solid darken(@color,@darke);
+    padding: 0 10px;
+    color: white !important;
+    border-radius: 3px;
+}
+
+
+.ExampleFileView {
+    display: block;
+    width: 104px;
+    height: 104px;
+    padding: 8px;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    position: relative;
+
+    &:hover {
+        background-color: #d9d9d9;
+    }
+
+    .inner {
+        .img {
+            background-image: url("https://dev.do.sakha.education:81/img/docs/pdf.png");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            display: block;
+            width: 88px;
+            height: 88px;
+        }
+    }
+}
+
+
+.d-project-mode-select-modal {
+    .ant-radio-button-wrapper {
+        height:unset !important;
+        min-height:40px;
+        line-height:1.1em;
+        padding:30px;
+        width:100%;
+    }
+}

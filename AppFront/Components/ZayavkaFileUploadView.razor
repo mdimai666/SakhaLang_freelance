@@ -1,0 +1,76 @@
+﻿<div class="d-document-uploader">
+    <div class="d-file-list">
+        @foreach(var file in Files?.OrderBy(s=>s.Created))
+        {
+            <div class="d-file-item" title="@file.FileName">
+                <div class="d-file-item-actions-top">
+                    <div></div>
+
+                    <div>
+                        <Popconfirm Title="Подтверждаете удаление?" OkText="Да" CancelText="Нет" 
+                            OnConfirm=@(e=>ItemRemoveClick(file))>
+                            <Button Icon="delete" Danger></Button>
+                        </Popconfirm>
+                    </div>
+                    @*<Button Icon="delete" Danger OnClick=@(e=>ItemRemoveClick(file)) ></Button>*@
+                </div>
+
+                @if (file.IsImage)
+                {
+                    <Image Width="102px" Height="102px" Src=@(file.FileUrl) Placeholder=placeholder >
+                    </Image>
+                } 
+                else
+                {
+                    <div class="d-file-preview-icon" style="background-image:url('@Q.ServerUrlJoin(FileEntity.ExtPreviewUrl(file.FileExt))')"></div>
+                }
+
+                <div class="d-file-item-actions-bottom">
+                    <a href="@file.FileUrl" target="_blank" download>
+                        <Button Icon="download">открыть</Button>
+                    </a>
+                </div>
+                
+            </div>
+        }
+    </div>
+    <Upload Action="@ActionUrl"
+            @ref=uploadref
+            Name="file"
+            Drag
+            Headers="@headers"
+            Multiple="@true"
+            @bind-FileList="fileList"
+            OnChange="HandleChange"
+            Data="upload_data"
+            ShowButton="fileList?.Count < 10"
+            Accept="@Accept"
+            BeforeUpload="BeforeUpload"
+            OnRemove="_onRemove"
+            OnSingleCompleted="OnSingleCompleted"
+            Class="1upload-list-inline d-input-file-area">
+
+
+        @*<div class="w-100">
+            <p class="ant-upload-drag-icon">
+            <Icon Type="inbox" />
+            </p>
+            <p class="ant-upload-text">
+            Щелкните или перетащите файл в эту область, чтобы загрузить</p>
+            <p class="ant-upload-hint">
+            Поддержка одиночной или массовой загрузки.
+            </p>
+            </div>*@
+        <div>
+            <Icon Type="plus"></Icon>
+            <div className="ant-upload-text">Загрузка файла</div>
+        </div>
+
+    </Upload>
+</div>
+
+@code {
+    RenderFragment placeholder =
+    @<img src=@(Q.ServerUrlJoin(FileEntity.ExtPreviewUrl("img")))/>
+    ;
+}

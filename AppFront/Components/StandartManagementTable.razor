@@ -1,0 +1,147 @@
+﻿@inherits AntDomComponentBase
+@typeparam TModel
+@typeparam TService
+@inject IStringLocalizer<AppRes> L
+@inject ILogger<LiveCycleTest1> _logger
+
+
+<div class="content-wrapper">
+
+    <div class="d-flex justify-content-between">
+        <div>
+            <Space>
+                @if (SearchExpression is not null)
+                {
+                    <Search Placeholder="Поиск..." @bind-Value=@SearchText AllowClear WrapperStyle="width: 200px;" OnChange=OnSearchChange />
+                }
+            </Space>
+        </div>
+        <div class="text-right mb-3">
+            @if(FormContent is not null){
+                <Button Type="@ButtonType.Primary" OnClick="AddClick">Создать @(L[typeof(TModel).Name])</Button>
+            }
+        </div>
+    </div>
+
+    <div class=spacer-2></div>
+
+    <Table @ref="table"
+           TItem="TModel"
+           DataSource="@Items"
+           Total="_total"
+           @bind-PageIndex="_pageIndex"
+           @bind-PageSize="_pageSize"
+           OnChange="OnChange">
+        @{
+            //var zayavka = context;
+        }
+
+        @*<Column @bind-Field="@context.Id" Sortable />*@
+        @*<Column Field="@context.Title" Sortable >
+            <div>
+            <a class="text-primary" @onclick=@(e=>EditClick(context))>@context.Title</a>
+            </div>
+            <div class="text-muted">@context.Description</div>
+            </Column>*@
+        @*<Column Field="@context.Description" Sortable />*@
+
+        @*<Column @bind-Field="@context.Created" Format="yyyy-MM-dd" Sortable Title="Создан" />*@
+
+        @if (TableContent is null)
+        {
+            <Column Field="@context.Id" Sortable />
+        }
+        else
+        {
+            @TableContent(context)
+
+        }
+
+        @*<ActionColumn Title="Действия">
+            <Space>
+            <Popconfirm Title="Уверены что хотите удалить?"
+            OnConfirm="()=> Delete(context.Id)"
+            OkText="Да"
+            CancelText="Нет">
+            <Button Danger Size="small" Type="primary">Удалить</Button>
+            </Popconfirm>
+            </Space>
+            </ActionColumn>*@
+    </Table>
+
+    <br />
+    <PagesTotal Page=_pageIndex PageSize=_pageSize TotalPages=_total />
+
+
+</div>
+
+
+<Modal Title="@(_addNew?"Создание":"Редактирование")"
+       Visible="_visible"
+       OnCancel=HandleCancel
+       Footer=null>
+
+    <div class="p-2">
+        @if (_model is null)
+        {
+            <Loader1 />
+        }
+        else
+        {
+            <AntDesign.Form Model="@_model"
+                        Context="model"
+                        Layout="@FormLayout.Vertical"
+                        OnFinish="HandleOk"
+                        Class="form-compact"
+                        @ref="@form">
+
+                @*<FormItem>
+                    <AntDesign.Input @bind-Value="@model.Title" />
+                    </FormItem>
+                    <FormItem>
+                    <AntDesign.TextArea AutoSize MinRows=4 @bind-Value="@model.Description" />
+                    </FormItem>*@
+
+                @*<LiveCycleTest1 />*@
+
+                @if (FormContent is null)
+            {
+                @* <FormItem>
+                    <AntDesign.Input @bind-Value="@model.Id" Disabled />
+                    </FormItem>*@
+            }
+            else
+            {
+
+                @FormContent(_model)
+
+                <FormItem>
+                    <div class="d-flex justify-content-between">
+                        <div class="text-left">
+                            @*<Popconfirm Title="Уверены что хотите удалить?"
+                                OnConfirm="()=> Delete(_model.Id)"
+                                OkText="Да"
+                                CancelText="Нет">
+                                <Button Danger Type="primary">Удалить</Button>
+                                </Popconfirm>*@
+                            <Button Danger Type="primary" OnClick=@(e=>OnModelDeleteClick(_model.Id))>Удалить</Button>
+                        </div>
+                        <div class="text-right">
+                            <Button OnClick=HandleCancel>
+                                Отмена
+                            </Button>
+                            <Button Type="@ButtonType.Primary" HtmlType="submit" Loading=_modeCreareButtonLoading>
+                                Сохранить
+                            </Button>
+                        </div>
+                    </div>
+                </FormItem>
+            }
+
+        </AntDesign.Form>
+
+        }
+    </div>
+
+</Modal>
+

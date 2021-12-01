@@ -1,0 +1,44 @@
+@page "/ViewDocument/{ID:guid}"
+
+@using System.Security.Claims
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserService userService
+
+<div class="content-wrapper">
+    <BasicPage model="model" Context="doc" LoadFunc="()=>service.Get(ID)">
+
+        <h2>@doc.Title</h2>
+
+        <p class="text-secondary">@doc.Created</p>
+
+        <article>
+            @((MarkupString)doc.Description)
+        </article>
+
+        <a href="@doc.File.FileUrl" target="_blank">
+            <Button Icon="download" Type="@ButtonType.Primary">
+                Скачать
+            </Button>
+        </a>
+
+    </BasicPage>
+</div>
+
+
+
+
+@code {
+    [Parameter]
+    public Guid ID { get; set; }
+
+    public Document model { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    public DocumentService service { get; set; }
+    [Inject]
+    public MessageService _message { get; set; }
+
+}

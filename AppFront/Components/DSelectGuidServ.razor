@@ -1,0 +1,22 @@
+﻿@typeparam TModel
+@typeparam TService
+
+<InputGroup>
+    <div class="d-flex">
+        <Cascader Options="@SelectNodes" Placeholder="Выберите" ShowSearch @bind-Value=SettetStringId Class="w-100" AllowClear=false />
+        @if (Busy)
+        {
+            <Spin Indicator=antIcon />
+        }
+    </div>
+</InputGroup>
+
+
+@if (errorMessage is not null)
+{
+    <Alert ShowIcon="true" Type=@AlertType.Error>@errorMessage</Alert>
+}
+
+@code {
+    RenderFragment antIcon = @<Icon Type="loading" Theme="outline" Style="font-size: 24px" Spin />;
+}

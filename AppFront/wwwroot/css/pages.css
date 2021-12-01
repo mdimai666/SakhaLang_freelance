@@ -1,0 +1,68 @@
+.car-number {
+  border: 1px solid grey;
+  padding: 0px 4px;
+  display: inline-block;
+  font-size: 0.8em;
+  border-radius: 3px;
+  cursor: default;
+}
+.car-number:hover {
+  color: darkseagreen;
+  border-color: darkseagreen;
+}
+.bg-status-Создана,
+.bg-status-created1 {
+  background-color: #73aad8;
+  border: 1px solid #275d8b;
+  padding: 0 10px;
+  color: black !important;
+  border-radius: 3px;
+}
+.bg-status-Представлена,
+.bg-status-created1 {
+  background-color: #92e632;
+  border: 1px solid #43710e;
+  padding: 0 10px;
+  color: black !important;
+  border-radius: 3px;
+}
+.bg-status-Доработка,
+.bg-status-created1 {
+  background-color: #d39f30;
+  border: 1px solid #574113;
+  padding: 0 10px;
+  color: black !important;
+  border-radius: 3px;
+}
+.bg-status-Допущена,
+.bg-status-created1 {
+  background-color: #0059ff;
+  border: 1px solid #002466;
+  padding: 0 10px;
+  color: black !important;
+  border-radius: 3px;
+}
+.bg-status-Снята,
+.bg-status-created1 {
+  background-color: #c53838;
+  border: 1px solid #4e1616;
+  padding: 0 10px;
+  color: black !important;
+  border-radius: 3px;
+}
+.bg-status-Победила,
+.bg-status-created1 {
+  background-color: #00cf00;
+  border: 1px solid #003600;
+  padding: 0 10px;
+  color: black !important;
+  border-radius: 3px;
+}
+.bg-status-Реализация,
+.bg-status-created1 {
+  background-color: #06b600;
+  border: 1px solid #011d00;
+  padding: 0 10px;
+  color: black !important;
+  border-radius: 3px;
+}

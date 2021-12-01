@@ -1,0 +1,14 @@
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+
+
+@code {
+
+    private MyJS myJS;
+
+    protected override void OnInitialized()
+    {
+        myJS = new(JS);
+        myJS.UpdateFeatherIcons();
+    }
+}

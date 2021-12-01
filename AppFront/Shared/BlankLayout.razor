@@ -1,0 +1,24 @@
+﻿@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime
+
+
+
+<Layout id="blank-layout" style="min-height:100vh;">
+    @Body
+</Layout>
+<!-- END: Content-->
+
+@code {
+    protected override void OnAfterRender(bool firstRender)
+    {
+        // execute conditionally for loading data, otherwise this will load
+        // every time the page refreshes
+        if (firstRender)
+        {
+            // Do work to load page data and set properties
+            //Console.WriteLine("RENDER!");
+        }
+
+        JSRuntime.InvokeVoidAsync("d_onPageLoad");
+    }
+}

@@ -1,0 +1,80 @@
+﻿@if (Items == null)
+{
+    <Loader1 />
+}
+else if (Items.Count == 0)
+{
+    <ContentNoRecords />
+}
+else
+{
+
+    <div class="row">
+        @foreach (var item in Items)
+        {
+            <a class="col-4" href="/Cat/@item.Id">
+                <div class="d-flex ">
+                    <div class="mr-3" style="width:172px">
+                        <div class="embed-responsive embed-responsive-4by3">
+                        @if (!string.IsNullOrEmpty(item.Image))
+                        {
+                            @*<img class="card-img-top" src="@item.Image" alt="Card image">*@
+                            <div class="embed-responsive-item card-img-top bg" 
+                                style="display:block;background-color:lightgrey;background-image:url('@item.Image')">
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="embed-responsive-item card-img-top" style="display:block;background:lightgrey;">
+                            </div>
+                        }
+                    </div>
+                    </div>
+                    <div class="flex-fill">
+                        <div>
+                            <div>
+                                @*<div class="text-secondary">@item.Created.ToShortDateString()</div>*@
+                                <div class="float-right">
+                                    @if (Q.User.IsAdmin)
+                                    {
+                                        <a href="/Category/Edit/@item.Id"><i class="fas fa-edit"></i></a>
+                                    }
+                                </div>
+                                <div>@item.Title</div>
+                            </div>
+                            <div>
+                                <div class="text-black">
+                                    @{
+                                        string text = item.Excerpt.StripHTML().Left(100);
+                                    }
+                                    @(text)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        }
+
+    </div>
+}
+
+@code {
+    [Parameter] public List<LessonCategory> Items { get; set; } = null;
+    [Inject] public LessonCategoryService service { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Load();
+    }
+
+
+    async void Load()
+    {
+        var result = await service.ListTable(new QueryFilter(1, 30));
+        Items = result.Records.ToList();
+        StateHasChanged();
+    }
+}

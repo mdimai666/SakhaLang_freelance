@@ -1,0 +1,27 @@
+﻿@using Microsoft.Extensions.Logging
+@inject ILogger<LiveCycleTest1> _logger
+
+<h3>>>LiveCycleTest1</h3>
+
+@code {
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _logger.LogWarning(">>LiveCycleTest1:INIT!");
+        //Q.LogWarn("XXX");
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _logger.LogWarning(">>LiveCycleTest1:OnAfterRender-firstRender");
+        }
+        else
+        {
+            _logger.LogWarning(">>LiveCycleTest1:OnAfterRender");
+        }
+
+        base.OnAfterRender(firstRender);
+    }
+}

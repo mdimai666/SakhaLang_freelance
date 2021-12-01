@@ -1,0 +1,108 @@
+﻿@page "/test"
+@using System.Security.Claims
+@using Microsoft.Extensions.Logging
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject HttpClient Http
+@inject ILogger<TestPage> _logger
+
+
+<div class="content-wrapper">
+
+    <h1>Index page</h1>
+
+    --
+
+    <a class="btn btn-primary" @onclick=GetProfile>GetProfile</a>
+
+    <hr>
+
+    <JsonDump Model=profile />
+
+    <hr />
+
+    <p>
+        <div class="">Emitter</div>
+        <a class="btn btn-primary" @onclick=OnAdd>Add</a>
+        <a class="btn btn-primary" @onclick=OnInvoke>Invoke</a>
+        <a class="btn btn-primary" @onclick=OnInvoke2>Invoke2</a>
+        <a class="btn btn-primary" @onclick=OnRemove>Remove</a>
+        <a class="btn btn-primary" @onclick=OnRemoveAll>Remove all</a>
+    </p>
+    <p>
+        <p>Updates</p>
+        <a class="btn btn-primary" @onclick=OnUpdateProfile>Update profile</a>
+        <a class="btn btn-primary" @onclick=UpdateNotifyCount>UpdateNotifyCount</a>
+    </p>
+    <p>
+        <p>httpClient interceptors</p>
+        <a class="btn btn-primary" @onclick=testGet1>testGet1</a>
+    </p>
+    
+</div>
+
+
+@code {
+
+    Profile profile;
+
+    Profile a = new Profile();
+
+    string eventName = "d1";
+
+    
+
+    public async void GetProfile(){
+
+        profile = await Http.GetFromJsonAsync<Profile>("/api/Account/GetProfile");
+        StateHasChanged();
+            
+
+    }
+
+    private void Event1(string text)
+    {
+        Console.WriteLine("Fire1 - " + text);
+        Console.WriteLine(nameof(Q.Profile));
+    }
+
+    private void OnAdd()
+    {
+        Q.Root.On(eventName, t => Event1(t));
+    }
+    private void OnInvoke()
+    {
+        Q.Root.Emit(eventName);
+    }
+    private void OnInvoke2()
+    {
+        Q.Root.Emit(eventName, Q.Profile.GetType().FullName);
+    }
+    private void OnRemove()
+    {
+        Q.Root.RemoveEmit(eventName, e => Event1(e));
+    }
+    private void OnRemoveAll()
+    {
+        Q.Root.RemoveEmit(eventName);
+    }
+
+    private void OnUpdateProfile()
+    {
+        Q.Root.Emit(Q.Profile.GetType(), EmitTypeMode.All);
+    }
+
+    private void UpdateNotifyCount()
+    {
+        int count = BlastCore.Extensions.Tools.RandomNumber(0, 99);
+
+        Q.UpdateNotifyCount(count);
+    }
+
+    private async void testGet1(){
+        _logger.LogWarning("request");
+        var result = await Http.GetFromJsonAsync<string>("/api/none");
+        Console.WriteLine("comlete result: " + result);
+
+    }
+}

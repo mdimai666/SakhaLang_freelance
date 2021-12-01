@@ -1,0 +1,60 @@
+﻿@page "/dev/expression"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+
+<h3>ExpressionTestPage</h3>
+
+
+<Button OnClick=OnBtn1Click>OnBtn1Click</Button>
+
+<section>
+    <p>
+        Total : @total
+    </p>
+    <p>SIZE: @SIZE</p>
+    <p>SIZE2: @SIZE</p>
+    <div>
+        <h2>MSG: @MSG</h2>
+    </div>
+    <div>
+        <h5>REQ:</h5>
+        <code>@REQ</code>
+        <hr />
+    </div>
+    <div class="row">
+        <div class="col">
+            <h5>REQ2:</h5>
+            <code style="font-size:11px;">@REQ2</code>
+            <hr />
+        </div>
+        <div class="col">
+            <h5>REQ3:</h5>
+            <code style="font-size:11px;">@REQ3</code>
+        </div>
+    </div>
+</section>
+
+
+<p></p>
+@if (geoLocations is not null)
+{
+
+    <AntList DataSource=geoLocations>
+        <ListItem>
+            <ChildContent>
+                <ListItemMeta>
+                    <TitleTemplate>
+                        @context.ShortName
+                    </TitleTemplate>
+                    <DescriptionTemplate>
+                        @context.Name
+                    </DescriptionTemplate>
+                </ListItemMeta>
+
+                @context.OKTMO
+
+            </ChildContent>
+        </ListItem>
+    </AntList>
+
+}

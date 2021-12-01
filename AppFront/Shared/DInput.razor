@@ -1,0 +1,23 @@
+﻿@*<div class="form-group">
+    <label class="form-label" >@nameof(_model.Name)</label>
+    <InputText class="ant-input form-control1 hide-valid-style1" type="text"
+    placeholder="" @attributes=@AdditionalAttributes   @bind-Value=_model.Name />
+    <span class="error">
+        <ValidationMessage For="@(()=> _model.Name)" />
+    </span>
+</div>
+
+@code {
+    [Parameter]
+    public string Value { get; set; }
+
+    [Parameter]
+    public string Label { get; set; }
+
+    [Parameter]
+    public string Placeholder { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object> AdditionalAttributes  { get; set; }
+}
+*@

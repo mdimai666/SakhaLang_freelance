@@ -1,0 +1,57 @@
+﻿@page "/Lesson"
+@using System.Linq.Expressions
+@inject IStringLocalizer<AppRes> L
+@*@inherits StandartEditForm1<Lesson,LessonService>*@
+
+
+<h3>@(L["Lesson.many"])</h3>
+
+@*<DSelectGuidServ @bind-Value=@selGeoTypeId
+    LabelExpression=@(s=>s.Title)
+    TService=GeoLocationTypeService TModel=LessonType />*@
+
+<div class="text-right">
+    <a href="/Lesson/Edit">
+        <Button>Новый урок</Button>
+    </a>
+</div>
+
+<StandartManagementTable TModel=Lesson TService=LessonService @ref=f SearchExpression=search>
+    <TableContent>
+        <Column @bind-Field=@context.Title Sortable>
+            <div class="d-flex">
+                <div class="mr-2">
+                    @if (!string.IsNullOrEmpty(context.Image))
+                    {
+                        <img width="50" alt="logo" src=@(context.Image) />
+                    }
+                    else
+                    {
+                        <div style="display:block;width:50px;height:50px;background:lightgrey;">
+                        </div>
+                    }
+                </div>
+                <div>
+                    <a href="/Lesson/Edit/@context.Id" class="text-primary">
+                        @context.Title
+                    </a>
+                    <div>
+                        @context.Excerpt
+                    </div>
+                </div>
+            </div>
+        </Column>
+        <Column @bind-Field=@context.Created Format="yyyy-MM-dd" Sortable Title="Создан" />
+    </TableContent>
+
+</StandartManagementTable>
+
+
+@code {
+    StandartManagementTable<Lesson, LessonService> f;
+
+    Guid selGeoTypeId;
+
+    Expression<Func<Lesson, bool>> search =>
+        model => model.Title.ToLower().Contains(f.SearchText.ToLower());
+}

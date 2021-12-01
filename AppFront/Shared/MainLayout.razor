@@ -1,0 +1,166 @@
+﻿@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime
+@inject NavigationManager Navigation
+@inject IStringLocalizer<AppRes> L
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+<AuthorizeView>
+    <Authorized>
+
+        <Layout id="main-layout1" style="min-height:100vh;">
+            <Sider Width="200" Class="site-layout-background aside1"
+                   Style="overflow:auto;height:100vh;height1:calc(100vh - 64px);position:fixed;left:0;z-index:1;top1:64px;"
+                   Collapsible=false Collapsed=@collapsed OnCollapse=@onCollapse>
+                @if (Q.User != null)
+                {
+                    <Menu Mode="MenuMode.Vertical"
+                      Id="sidemenu1"
+                      DefaultSelectedKeys=@(new[] {"/"})
+                      Style="height: 100%; border-right: 0;">
+                        @foreach (var menu in menu_items)
+                        {
+                            if (string.IsNullOrEmpty(menu.Role) || Q.User.Role == menu.Role)
+                            {
+
+                                if (menu.SubItemFlag)
+                                {
+                                    <SubMenu Key="@menu.Url">
+                                        <TitleTemplate>
+                                            <span>
+                                                <i class="@menu.Icon  mr-1"></i>
+                                                @if (!collapsed)
+                                                {
+                                                    <span>@menu.Title</span>
+                                                }
+                                            </span>
+                                        </TitleTemplate>
+                                        <ChildContent>
+
+
+                                            @foreach (var subitem in menu.SubItems)
+                                            {
+                                                <AntDesign.MenuItem Key="@subitem.Url" RouterLink="@subitem.Url">
+                                                    <i class="@subitem.Icon mr-1"></i>
+                                                    @subitem.Title
+
+                                                </AntDesign.MenuItem>
+                                            }
+                                        </ChildContent>
+
+
+                                    </SubMenu>
+                                }
+                                else
+                                {
+                                    <AntDesign.MenuItem Key="@menu.Url" RouterLink="@menu.Url">
+                                        <i class="@menu.Icon  mr-1"></i>
+                                        @if (!collapsed)
+                                        {
+                                            @menu.Title
+                                        }
+                                    </AntDesign.MenuItem>
+                                }
+                            }
+                        }
+                        @* @foreach(var menu in menu_items)
+                            {
+
+                            <AntDesign.MenuItem Key="@menu.Url" RouterLink="@menu.Url">
+                            @ *<img src="@menu.Icon" width="20" height="20" class="mr-1" >* @
+                            <i class="@menu.Icon  mr-1" ></i>
+                            @menu.Title
+                            </AntDesign.MenuItem>
+                            }
+                        *@
+                    </Menu>
+                }
+            </Sider>
+            <Layout>
+                <Header Class="header d-flex justify-content-between 1container" 
+                    Style="position:fixed; z-index:2; width:calc(100% - 224px - 24px);margin-left: 224px">
+                    <div class="d-flex">
+                        <a href="/">
+                            <div class="logo" />
+                        </a>
+                        @*<div class="logo-text">SakhaLang</div>*@
+                    </div>
+                    <div class="d-flex">
+                        <Menu Theme="MenuTheme.Light" Mode="MenuMode.Horizontal" DefaultSelectedKeys=@(new []{"2"})>
+                            <AntDesign.MenuItem Key="1" Class="px-3 m-0" RouterLink="/" RouterMatch="NavLinkMatch.All">Главное</AntDesign.MenuItem>
+                            <AntDesign.MenuItem Key="3" Class="px-3 m-0" RouterLink="/profile">Профиль</AntDesign.MenuItem>
+                        </Menu>
+                        <div class="d-flex ml-1 align-items-center py-2">
+                            <Avatar Size="30" Icon="user" Class="mr-2 xcenter" />
+                            @*<span>Dmitry</span>*@
+
+                            <Dropdown>
+                                <Overlay>
+                                    <Menu>
+                                        <AntDesign.MenuItem RouterLink="/profile/">
+                                            Профиль
+                                        </AntDesign.MenuItem>
+                                        <AntDesign.MenuItem RouterLink="/logout/">
+                                            Выход
+                                        </AntDesign.MenuItem>
+
+                                    </Menu>
+                                </Overlay>
+                                <ChildContent>
+                                    <a class="ant-dropdown-link" @onclick:preventDefault>
+                                        @Q.Profile.DisplayName <Icon Type="down" />
+                                    </a>
+                                </ChildContent>
+                            </Dropdown>
+                        </div>
+                    </div>
+                </Header>
+                <Layout Style=" margin-left: 200px">
+
+                    <Layout Style=" padding: 24px 24px;">
+                        @*<AntDesign.Breadcrumb Style="margin: 16px 0;">
+                            <BreadcrumbItem>Home</BreadcrumbItem>
+                            <BreadcrumbItem>List</BreadcrumbItem>
+                            <BreadcrumbItem>App</BreadcrumbItem>
+                            </AntDesign.Breadcrumb>*@
+                        <Content Class="site-layout-background"
+                                 Style="padding: 24px; margin:0; min-height:280px;margin-top: 64px;">
+                            @Body
+                        </Content>
+                    </Layout>
+                </Layout>
+            </Layout>
+        </Layout>
+    </Authorized>
+    <Authorizing>
+        <Loader1 />
+    </Authorizing>
+    <NotAuthorized>
+        <RedirectToLogin />
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+<style>
+    #main-layout1 .ant-layout-sider-trigger {
+        font-size: 18px;
+        line-height: 64px;
+        padding: 0 24px;
+        cursor: pointer;
+        transition: color 0.3s;
+        background: white;
+        color: black;
+    }
+
+        #main-layout1 .ant-layout-sider-trigger:hover {
+            color: #1890ff;
+        }
+
+    /*#sidemenu1*/
+    /*.ant-menu-submenu*/
+    /*ant-menu-submenu   ant-menu-submenu-popup ant-menu ant-menu-light ant-menu-submenu-placement-rightTop ant-menu-submenu-hidden*/
+    /*position: absolute;   z-index:4000;left: 204px;right: unset;top: 584px;bottom: unset;transform-origin: 0 33%*/
+    .ant-menu-submenu.ant-menu-submenu-popup {
+        /*top:308px !important;*/
+    }
+</style>

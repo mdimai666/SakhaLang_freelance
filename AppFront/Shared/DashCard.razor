@@ -1,0 +1,29 @@
+﻿<div class="card border-0 border-radius-2 bg-@BgClass w-100">
+    <div class="card-body">
+        <div class="d-flex flex-sm-column1 flex-xl-row flex-wrap1  align-items-center justify-content-between1">
+            <div class="icon-rounded-inverse-@BgClass icon-rounded-lg" style="width:60px">
+                <i class="@Icon"></i>
+            </div>
+            <div class="text-white ml-1 ml-sm-3">
+                <p class="font-weight-medium mt-md-2 mt-xl-0 text-md-center text-xl-left">@Title</p>
+                <div class="d-flex flex-md-column flex-xl-row flex-wrap align-items-baseline align-items-md-center align-items-xl-baseline">
+                    <h3 class="mb-0 mb-md-1 mb-lg-0 mr-1">@Content</h3>
+                    <small class="mb-0">@Postfix</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public string Content { get; set; }
+    [Parameter]
+    public string Postfix { get; set; }
+    [Parameter]
+    public string BgClass { get; set; }
+    [Parameter]
+    public string Icon { get; set; }
+}

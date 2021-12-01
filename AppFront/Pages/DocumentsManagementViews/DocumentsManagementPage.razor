@@ -1,0 +1,48 @@
+@page "/DocumentsManagement"
+
+@inject IJSRuntime JS
+
+<div class="content-wrapper">
+    <div class="content-header row">
+    </div>
+    <h1>Документы</h1>
+    <hr>
+
+    <div class="text-right">
+        <a href="/EditDocument">
+            <Button>Добавить</Button>
+        </a>
+    </div>
+    
+    <Table @ref="table"
+           TItem="Document"
+           DataSource="@Items"
+           Total="_total"
+           @bind-PageIndex="_pageIndex"
+           @bind-PageSize="_pageSize"
+           OnChange="OnChange"
+           
+    >
+    @{
+            var city = context;
+    }
+
+        @*<Column @bind-Field="@context.Id" Sortable />*@
+        <Column Field="@context.Title" Sortable Title="Название">
+            <div>
+                <a href="/EditDocument/@context.Id" class="text-accent" >@context.Title</a>
+                @*<span class="car-number ml-2">@context.CarNumber</span>*@
+            </div>
+            <div>
+                <span class="text-secondary">@((MarkupString)context.Description)</span>
+            </div>
+        </Column>
+        <Column @bind-Field="@context.Created" Format="yyyy-MM-dd" Sortable Title="Создан" />
+
+    </Table>
+
+    <br />
+    <PagesTotal Page=_pageIndex PageSize=_pageSize TotalPages=_total />
+</div>
+
+

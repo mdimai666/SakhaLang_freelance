@@ -1,0 +1,170 @@
+﻿@page "/Profile"
+@using AppShared.Dto
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+<div class="content-wrapper">
+
+    <h1>Профиль</h1>
+    <hr>
+
+
+<BasicPage @bind-model="user" TModel=UserProfileInfoDto Context="user" LoadFunc="()=>userService.UserProfileInfo(Q.User.Id)">
+        @*<p class="text-secondary">@user.Id</p>*@
+
+        <section id="doctor-2-details" class="wide-70 doctor-details-section division">
+			<div class="container">
+				<div class="row">
+
+
+					<!-- DOCTOR PHOTO -->
+					<div class="col-md-5 col-xl-5">
+						<div class="doctor-photo mb-30 text-center">
+
+							<!-- Photo -->
+							@*<img class="img-fluid" src="images/doctor-5.jpg" alt="doctor-foto">*@
+							<div class="xcenter mb-4">
+								<Avatar class="img-fluid" Size="200" Icon="user"></Avatar>
+							</div>
+
+							<!-- Text -->
+							<p class="mt-30">
+								Контакты
+							</p>
+
+							<!-- Doctor Contacts -->
+							<div class="doctor-contacts">
+								@if(string.IsNullOrEmpty(user.Phone)==false){
+									<h4 class="h4-xs">
+										<i class="fas fa-mobile-alt"></i> 
+										<a href="tel:@user.Phone" class="">@user.Phone</a>
+									</h4>
+								}
+								<h4 class="h4-xs blue-color">
+									<i class="fas fa-envelope-open-text"></i>
+									<a href="mailto:@user.Email" class="blue-color">@user.Email</a>
+								</h4>
+							</div>
+
+							<!-- Button -->
+							@*<a href="appointment.html" class="btn btn-md btn-blue blue-hover">Book an Appointment</a>*@
+
+							<!-- Button -->
+							@*<a href="timetable.html" class="btn btn-md btn-tra-grey grey-hover">View Timetable</a>*@
+
+							@*<div class="display-4">
+								<span class="car-number">
+									@@user.CarNumber
+								</span>
+							</div>*@
+
+						</div>
+					</div>	<!-- END DOCTOR PHOTO -->
+					<!-- DOCTOR'S BIO -->
+					<div class="col-md-6 col-xl-6 offset-xl-1">
+						<div class="doctor-bio">
+
+							<!-- Name -->
+							<h2 class="h2-sm blue-color">@user.FullName</h2>
+							@*<h5 class="h5-lg blue-color">Neurologist / Epilepsy Specialist / Cardiologist</h5>*@
+
+							<Divider Orientation="left">Основная информация</Divider>
+
+
+							<div class="driver-info">
+								<div class="item">
+									<label>Статус</label>
+									<span class="value">Активен</span>
+								</div>
+								@*<div class="item">
+									<label>Город</label>
+									<span class="value">@user.City?.Title</span>
+								</div>*@
+								<div class="item">
+									<label>Заявок</label>
+									<span class="value">@user.ZayavkaCount</span>
+								</div>
+                                <div class="item">
+									<label>Комментариев</label>
+									<span class="value">@user.CommentCount</span>
+								</div>
+
+							</div>
+
+							<!-- Text -->
+							<div>
+								<div>Текст профиля</div>
+                                <p class="mt-2">
+                                    @user.About
+                                </p>
+							</div>
+
+
+                            <a href="/EditUser/">
+							    <Button Type="@ButtonType.Primary">Редактировать</Button>
+                            </a>
+
+							<!-- Actions -->
+							@*<div>
+								<Divider Orientation="left">Действия</Divider>
+
+								<Button Danger>Заблокировать</Button>
+								<Button >Активировать</Button>
+								<Button>Добавить баланс</Button>
+								<a class="btn btn-outline-success btn-sm" target="_blank" href="https://api.whatsapp.com/send?phone=@user.PhoneNumber&text=Здравствуйте!&source=http://gogotechnology.ru/&data=">
+							<i class="fab fa-whatsapp"></i>
+							Написать WhatsApp</a>
+
+			
+							</div>*@
+							<!-- END Actions -->
+
+						</div>
+					</div>	<!-- END DOCTOR BIO -->
+
+
+				</div>   <!-- End row -->
+			</div>	  <!-- End container -->
+		</section>
+
+
+        @*<Avatar Text="@(user.UserName?.First().ToString()??"A")" Size="100" />*@
+
+        <AntDesign.Form Model="@_model"
+                    Context="model"
+                    Layout="@FormLayout.Vertical"
+                    OnFinish="OnFinish"
+                    Class="form-compact"
+                    @ref="@form">
+            <ValidationSummary />
+
+            @*<Upload Action="@UploadAction"
+                Name="file"
+                Drag
+                Headers="headers"
+                Accept="@Accept"
+                OnSingleCompleted="OnSingleCompleted">
+                <div class="w-100">
+                    <p class="ant-upload-drag-icon">
+                        <Icon Type="inbox" />
+                    </p>
+                    <p class="ant-upload-text">
+                        Щелкните или перетащите файл в эту область, чтобы загрузить
+                    </p>
+                    <p class="ant-upload-hint">
+                        Поддержка одиночной или массовой загрузки.
+                    </p>
+                </div>
+            </Upload>*@
+
+            @*<FormItem>
+                <Button Type="@ButtonType.Primary" HtmlType="submit">
+                    Сохранить
+                </Button>
+            </FormItem>*@
+
+        </AntDesign.Form>
+
+		</BasicPage>
+
+</div>

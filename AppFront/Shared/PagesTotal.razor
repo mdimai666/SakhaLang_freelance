@@ -1,0 +1,10 @@
+<div class="text-secondary">Страница: @Page | На странице: @PageSize | Всего: @TotalPages </div>
+
+@code {
+    [Parameter]
+    public int Page {get;set;}
+    [Parameter]
+    public int TotalPages {get;set;}
+    [Parameter]
+    public int PageSize {get;set;}
+}

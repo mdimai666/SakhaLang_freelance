@@ -1,0 +1,80 @@
+﻿@if (Items == null)
+{
+    <Loader1 />
+}
+else if (Items.Count == 0)
+{
+    <ContentNoRecords />
+}
+else
+{
+    <AntList DataSource="@Items" ItemLayout="@ListItemLayout.Vertical">
+        <ChildContent Context="item">
+            <ListItem>
+                @*Actions="@(new[] { iconText(("start","156")),iconText(("like","156")),iconText(("message","2")) })"*@
+
+                <Extra>
+                    @*<img width="272" alt="logo" src="@item.Image" />*@
+                    @if (Q.User.IsAdmin)
+                {
+                    <a href="/Category/Edit/@item.Id"><i class="fas fa-edit"></i></a>
+                }
+            </Extra>
+
+            <ChildContent>
+                <div class="d-flex ">
+                    <div class="mr-3" style="width:272px">
+                        @if (!string.IsNullOrEmpty(item.Image))
+                        {
+                            @*<Image Width="272px" Src=@(item.FileList.ElementAt(0).FileUrl) />*@
+                            <img width="272" alt="logo" src=@(item.Image) />
+                        }
+                        else
+                        {
+                            <div style="display:block;width:272px;height:200px;background:lightgrey;">
+                            </div>
+                        }
+                    </div>
+                    <div class="flex-fill">
+                        <ListItemMeta>
+                            <TitleTemplate>
+                                <div class="text-secondary">@item.Created.ToShortDateString()</div>
+                                <div>@item.Title</div>
+                            </TitleTemplate>
+                            <DescriptionTemplate>
+                                <div class="text-black">
+                                    @{
+                                        string text = item.Excerpt.StripHTML().Left(100);
+                                    }
+                                    @(text)
+                                </div>
+                            </DescriptionTemplate>
+                        </ListItemMeta>
+                    </div>
+                </div>
+
+
+            </ChildContent>
+        </ListItem>
+    </ChildContent>
+</AntList>
+}
+
+@code {
+    [Parameter] public List<LessonCategory> Items { get; set; } = null;
+    [Inject] public LessonCategoryService service { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Load();
+    }
+
+
+    async void Load()
+    {
+        var result = await service.ListTable(new QueryFilter(1, 30));
+        Items = result.Records.ToList();
+        StateHasChanged();
+    }
+}

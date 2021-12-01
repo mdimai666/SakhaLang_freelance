@@ -1,0 +1,40 @@
+﻿@typeparam TModel
+@typeparam TService
+@inject IStringLocalizer<AppRes> L
+
+<h3>StandartEditForm1</h3>
+@*@if (true)
+{
+    <AntDesign.Form Model="@_model"
+                Context="model"
+                Layout="@FormLayout.Vertical"
+                OnFinish="HandleOk"
+                Class="form-compact"
+                @ref="form">
+
+
+    @if (ChildContent is null)
+    {
+        <FormItem>
+            <AntDesign.Input @bind-Value="@model.Id" Disabled />
+        </FormItem>
+    }
+    else
+    {
+        @ChildContent(model)
+
+        <FormItem>
+            <div class="text-right">
+                <Button OnClick=HandleCancel>
+                    Отмена
+                </Button>
+                <Button Type="@ButtonType.Primary" HtmlType="submit" Loading=_modeCreareButtonLoading>
+                    Сохранить
+                </Button>
+            </div>
+        </FormItem>
+    }
+
+</AntDesign.Form>
+
+}*@

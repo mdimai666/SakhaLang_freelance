@@ -1,0 +1,144 @@
+@page "/Category/Edit"
+@page "/Category/Edit/{ID:guid}"
+
+@using Blazored.TextEditor
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize(Roles = "Admin")]
+
+@inject UserService userService
+
+<div class="content-wrapper">
+    <div class="content-header row">
+        <h3>Редактирование категории</h3>
+    </div>
+
+    @if (_model != null)
+    {
+
+        <AntDesign.Form Model="@_model"
+                    Context="model"
+                    Layout="@FormLayout.Vertical"
+                    OnFinish="OnFinish"
+                    Class="form-compact"
+                    @ref="@form">
+            <ValidationSummary />
+
+
+            <FormItem>
+                <AntDesign.Input @bind-Value="@model.Title" Size="@InputSize.Large" />
+            </FormItem>
+
+            <div>
+                <div>
+                    Изображение
+                </div>
+                @*@if(model.FileList != null)
+                    {
+                    foreach(var file in model.FileList)
+                    {
+                    <span>@file.FileName</span>
+                    }
+
+                    }*@
+                @*@if(model.)*@
+                @if (!_addNewItem)
+            {
+
+                <FileUpload2 ID="@model.Id"
+                        @bind-Files="@model.FileList"
+                        ActionUrl='@Q.ServerUrlJoin("api/LessonCategory/Upload?file_group=Image")'
+                        Accept=".jpg,.png,.jpeg"
+                        ViewFiltergroup="Image"
+                        OnFileUpload=OnFileUpload
+                        OnDeleteFile=OnDeleteFile
+                        MinCount="0" MaxCount="1" />
+            }
+
+            <div class="spacer-1"></div>
+
+            <FormItem>
+                <TextArea Rows=3 @bind-Value=@model.Excerpt />
+            </FormItem>
+
+        </div>
+
+        <FormItem>
+            <div>Полное описание</div>
+
+            @*<AntDesign.TextArea @bind-Value="@model.Description" />*@
+            <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Текст">
+                <ToolbarContent>
+                    <select class="ql-header">
+                        <option selected=""></option>
+                        <option value="1"></option>
+                        <option value="2"></option>
+                        <option value="3"></option>
+                        <option value="4"></option>
+                        <option value="5"></option>
+                    </select>
+                    <span class="ql-formats">
+                        <button class="ql-bold"></button>
+                        <button class="ql-italic"></button>
+                        <button class="ql-underline"></button>
+                        <button class="ql-strike"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <select class="ql-color"></select>
+                        <select class="ql-background"></select>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-list" value="ordered"></button>
+                        <button class="ql-list" value="bullet"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-link"></button>
+                    </span>
+                </ToolbarContent>
+                <EditorContent>
+                    @((MarkupString)edit_html)
+                </EditorContent>
+            </BlazoredTextEditor>
+        </FormItem>
+
+
+        <FormItem>
+            <Space>
+
+                @if (!_addNewItem)
+                {
+                    <DDeleteButton OnConfirm=OnDeleteClick />
+                }
+
+                <Button Type="@ButtonType.Primary" HtmlType="submit">
+                    Сохранить
+                </Button>
+            </Space>
+        </FormItem>
+
+    </AntDesign.Form>
+
+    }
+    else
+    {
+        <Loader1 />
+    }
+
+</div>
+
+<style>
+    /* you can make up upload button and sample style by using stylesheets */
+    .ant-upload-select-picture-card i {
+        color: #999;
+        font-size: 32px;
+    }
+
+    .ant-upload-select-picture-card .ant-upload-text {
+        margin-top: 8px;
+        color: #666;
+    }
+
+    .ql-editor {
+        min-height: 300px;
+    }
+</style>

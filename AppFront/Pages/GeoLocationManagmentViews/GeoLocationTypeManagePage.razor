@@ -1,0 +1,34 @@
+﻿@page "/geo/GeoLocationType"
+@inject IStringLocalizer<AppRes> L
+
+
+<h1>Настройки</h1>
+
+<AppFront.Pages.Settings.SettingsTabs />
+<AppFront.Pages.Settings.SettingsGeoTabs />
+<hr>
+
+<h3>@(L["GeoLocationType.many"])</h3>
+
+<StandartManagementTable TModel=GeoLocationType TService=GeoLocationTypeService @ref=f>
+    <TableContent>
+        <Column @bind-Field=@context.Title Sortable>
+            <a @onclick=@(e=>f.EditClick(context)) class="text-primary">
+                @context.Title
+            </a>
+        </Column>
+        @*<Column @bind-Field=@context.Created Format="yyyy-MM-dd" Sortable Title="Создан" />*@
+    </TableContent>
+
+    <FormContent>
+        <FormItem>
+            <AntDesign.Input @bind-Value="@context.Title" />
+        </FormItem>
+    </FormContent>
+</StandartManagementTable>
+
+
+@code {
+    StandartManagementTable<GeoLocationType, GeoLocationTypeService> f;
+
+}

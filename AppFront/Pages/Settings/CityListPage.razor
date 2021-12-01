@@ -1,0 +1,178 @@
+﻿@page "/settings/cities"
+@using System.ComponentModel.DataAnnotations
+
+
+<div class="content-wrapper">
+
+    <h1>Города</h1>
+    <AppFront.Pages.Settings.SettingsTabs/>
+    <hr>
+
+    <div class="text-right">
+        <Button OnClick="AddNewItemModal">Добавить</Button>
+    </div>
+    
+    <Table @ref="table"
+           TItem="City"
+           DataSource="@Items"
+           Total="_total"
+           @bind-PageIndex="_pageIndex"
+           @bind-PageSize="_pageSize"
+           OnChange="OnChange"
+           
+    >
+    @{
+            var city = context;
+    }
+
+        @*<Column @bind-Field="@context.Id" Sortable />*@
+        <Column @bind-Field="@context.Name" Sortable Title="Город">
+            <div>
+                <a @onclick="()=>OpenModalEdit(city)" class="text-accent" >@context.Name</a>
+                @*<span class="car-number ml-2">@context.CarNumber</span>*@
+            </div>
+            <div>
+                <span class="text-secondary">@context.Location</span>
+            </div>
+        </Column>
+        <Column @bind-Field="@context.Currency" Title="Валюта" >
+             <div>
+                 @context.Currency,@context.CurrencySymbol
+             </div>
+        </Column>
+        <Column @bind-Field="@context.Created" Format="yyyy-MM-dd" Sortable Title="Создан" />
+
+        <Column @bind-Field="@context.Active" Sortable Title="Активен" Width="100px" >
+            @if (@context.Active)
+            {
+                <span class="oi oi-circle-check text-success"></span>
+            }
+        </Column>
+
+        @*<Column Title="Temp. (F)" Field="@context.TemperatureF" />*@
+        @*<Column Title="Hot" Field="@context.Hot">
+            <Switch @bind-Value="@context.Hot"></Switch>
+        </Column>*@
+        @*<Column @bind-Field="@context.Status" Sortable />*@
+        @*<ActionColumn Title="Действия">*@
+            @*<Space>*@
+                @*<SpaceItem><Button Danger OnClick="()=>Delete(context.Id)">Delete</Button></SpaceItem>*@
+                @*<Popconfirm Title="Sure to delete?"
+                            OnConfirm="()=> Delete(context.Id)"
+                            OkText="Yes"
+                            CancelText="No">
+                    <Button Danger Size="small" Type="primary">Delete</Button>
+                </Popconfirm>*@
+            @*</Space>*@
+        @*</ActionColumn>*@
+    </Table>
+
+    <br />
+    <PagesTotal Page=_pageIndex PageSize=_pageSize TotalPages=_total />
+
+    
+</div>
+
+    @*<BasicPage TModel="City" LoadFunc="()=>service.Get(tid)">*@
+
+    <Modal Title="Редактировать город"
+       Visible="@_editModalVisible"
+       OnOk="ModalSave"
+       OkText="@(_addNewCity?"Добавить":"Сохранить")"
+       OnCancel="()=>_editModalVisible = false"
+       >
+
+        <AntDesign.Form
+            Model="@_model" 
+            Context="model"
+            Layout="@FormLayout.Vertical" 
+            OnFinish="OnFinish"
+            Class="form-compact"
+            @ref="@form"
+            >
+
+            <FormItem Label="@nameof(model.Name)">
+                <AntDesign.Input @bind-Value="@model.Name" />
+            </FormItem>
+
+            <FormItem Label="@nameof(model.Currency)">
+                <AntDesign.Input @bind-Value="@model.Currency" />
+            </FormItem>
+
+            <FormItem Label="@nameof(model.CurrencySymbol)">
+                <AntDesign.Input @bind-Value="@model.CurrencySymbol" />
+            </FormItem>
+
+            <FormItem Label="@nameof(model.Location)">
+                <AntDesign.Input @bind-Value="model.Location" />
+            </FormItem>
+
+            <FormItem Label="@nameof(model.Active)">
+                <AntDesign.Switch @bind-Value="model.Active" />
+            </FormItem>
+
+
+            @*<FormItem>
+                <Button Type="@ButtonType.Primary" HtmlType="submit">
+                    Сохранить
+                </Button>
+            </FormItem>*@
+
+        </AntDesign.Form> 
+
+    </Modal>
+    @*</BasicPage>*@
+
+@*<EditForm Model="@_model" OnValidSubmit="OnSave">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    
+
+    <!-- -->
+    <div class="form-group">
+        <label class="form-label" >@nameof(_model.Name)</label>
+        <InputText class="ant-input form-control1 hide-valid-style1 no-transition" type="text"
+        placeholder=""  @bind-Value=_model.Name />
+        <span class="error">
+            <ValidationMessage For="@(()=> _model.Name)" />
+        </span>
+    </div>
+    <!-- -->
+    <!-- -->
+    <div class="form-group">
+        <label class="form-label" >@nameof(_model.Currency)</label>
+        <InputText class="ant-input form-control1 hide-valid-style1 no-transition" type="text"
+        placeholder=""  @bind-Value=_model.Currency />
+        <span class="error">
+            <ValidationMessage For="@(()=> _model.Currency)" />
+        </span>
+    </div>
+    <!-- -->
+    <!-- -->
+    <div class="form-group">
+        <label class="form-label" >@nameof(_model.CurrencySymbol)</label>
+        <InputText class="ant-input form-control1 hide-valid-style1 no-transition" type="text"
+        placeholder=""  @bind-Value=_model.CurrencySymbol />
+        <span class="error">
+            <ValidationMessage For="@(()=> _model.CurrencySymbol)" />
+        </span>
+    </div>
+    <!-- -->
+    <!-- -->
+    <div class="form-group">
+        <label class="form-label" >@nameof(_model.Location)</label>
+        <InputText class="ant-input form-control1 hide-valid-style1 no-transition" type="text"
+        placeholder=""  @bind-Value=_model.Location />
+        <span class="error">
+            <ValidationMessage For="@(()=> _model.Location)" />
+        </span>
+    </div>
+    <!-- -->
+
+    <Button Type="@ButtonType.Primary" HtmlType="submit">
+        Сохранить
+    </Button>
+</EditForm>
+
+*@
+

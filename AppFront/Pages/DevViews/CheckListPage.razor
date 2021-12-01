@@ -1,0 +1,73 @@
+﻿@page "/check-list"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+
+
+<h3>Чек лист</h3>
+
+<div class="spacer-2"></div>
+
+<ul class="list-unstyled list1 @(hideChecked?"hide-checked":"")">
+    @*<li header>Заметки 1</li>
+        <li check2>Предоставить кнопка</li>
+        <li check2>сортировка таблицы не работает</li>
+        <li>для заявки идшник</li>
+        <li>Для файла мини подтверждение, и сразу предпросмотр</li>
+        <li check2>Для файлов 100мб</li>
+        <li check2>Фильтры таблицы</li>*@
+    <li header>Заметки 6</li>
+    <li check>Для импорта типология не работает</li>
+</ul>
+
+
+@code {
+#if DEBUG
+    bool hideChecked = !true;
+#else
+    bool hideChecked = false;
+#endif
+}
+
+<style>
+    .list1 li {
+        margin-bottom: 0.5em;
+    }
+
+        .list1 li:not([header]):not([subheader])::before {
+            content: '[ ]';
+            position: inline-block;
+            margin-right: 8px;
+            font-family: Courier New, Courier, monospace;
+            color: lightgray;
+            font-weight: bold;
+        }
+
+        .list1 li:not([header]):not([subheader])[check]::before {
+            content: '[x]';
+            color: #4FF43A;
+        }
+
+        .list1 li:not([header]):not([subheader])[check2]::before {
+            content: '[x]';
+            color: #1E1E1E;
+        }
+
+        .list1 li:hover::before {
+            color: black;
+        }
+
+        .list1 li[header] {
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .list1 li[subheader] {
+            padding-left: 20px;
+            font-size: 1.0em;
+            font-weight: bold;
+        }
+
+    .list1.hide-checked li[check] {
+        display: none;
+    }
+</style>

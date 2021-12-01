@@ -1,0 +1,52 @@
+﻿@page "/Lesson/{ID:guid}"
+
+
+
+<div class="container">
+    <h4 class="text-secondary">Новости</h4>
+    @if (Post == null)
+    {
+        <Loader1 />
+    }
+    else
+    {
+        <article>
+
+
+
+            <h2>@Post.Title</h2>
+
+            <div class="text-secondary">@Post.Created</div>
+
+            @*@if (Post.FileList?.Count > 0)
+            {
+                <Image Src=@(Post.FileList.ElementAt(0).FileUrl) />
+            }*@
+
+
+            @if (VideoFrame().Length> 0)
+            {
+                <div>
+                    
+                    <div class="embed-responsive embed-responsive-16by9">
+                      <iframe class="embed-responsive-item" src="@VideoFrame()"></iframe>
+                    </div>
+                </div>
+            }
+            else if (Post.FileList?.Count > 0)
+            {
+                <div class="text-center">
+                    <img src=@(Post.FileList.ElementAt(0).FileUrl) />
+                </div>
+            }
+
+            <div class="post-body">
+                @((MarkupString)Post.Content)
+            </div>
+
+
+
+        </article>
+
+    }
+</div>

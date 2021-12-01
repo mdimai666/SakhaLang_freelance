@@ -1,0 +1,55 @@
+﻿@page "/docs"
+
+@inject IJSRuntime JS
+
+<div class="content-wrapper">
+    <div class="content-header row">
+    </div>
+    <h1>Документы</h1>
+    <hr>
+
+    <div class="text-right">
+    </div>
+
+
+    @if (Items == null)
+    {
+         <Loader1/>
+    }
+    else if(Items.Count == 0)
+    {
+        <ContentNoRecords/>   
+    }
+    else 
+    {
+        <AntList DataSource="@Items" Context="item">
+            <ListItem>
+                <ListItemMeta>
+                    <TitleTemplate>
+                        <a href="/ViewDocument/@item.Id">@item.Title</a>
+                    </TitleTemplate>
+                    <AvatarTemplate>
+                        @*<Avatar Src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></Avatar>*@
+                        <Icon Type="file-text" Theme="fill" Style="font-size:40px;" />
+                    </AvatarTemplate>
+                    <DescriptionTemplate>
+                        <div>@item.Created</div>
+                        @((MarkupString)item.Description)
+                    </DescriptionTemplate>
+                </ListItemMeta>
+            </ListItem>
+        </AntList>
+    }
+
+
+</div>
+
+@code {
+
+    RenderFragment avatar =
+    @<Avatar Src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></Avatar>
+    ;
+
+
+}
+

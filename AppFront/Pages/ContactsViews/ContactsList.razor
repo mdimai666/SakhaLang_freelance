@@ -1,0 +1,46 @@
+﻿@using AntDesign.TableModels
+
+
+<Table TItem="ContactPerson" DataSource="@data" OnRowClick="OnRowClick">
+    <Column @bind-Field="@context.Name">
+        <a>@context.Name</a>
+    </Column>
+    <Column @bind-Field="@context.Function"></Column>
+    <Column @bind-Field="@context.Description"/>
+    <Column @bind-Field="@context.Phone">
+        <TitleTemplate>
+            <span> <Icon Type="phone" /> Телефон </span>
+        </TitleTemplate>
+    </Column>
+    <Column @bind-Field="@context.Email">
+        <TitleTemplate>
+            <span> <Icon Type="mail" /> Email </span>
+        </TitleTemplate>
+    </Column>
+
+</Table>
+
+@code {
+
+    [Inject]
+    public ContactPersonService service { get; set; }
+
+    List<ContactPerson> data;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Load();
+    }
+
+    public async void Load()
+    {
+        data = await service.GetCached();
+        StateHasChanged();
+    }
+
+    void OnRowClick(RowData<ContactPerson> row)
+    {
+        Console.WriteLine($"row {row.Data.Name} was clicked.");
+    }
+}

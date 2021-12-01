@@ -1,0 +1,19 @@
+﻿
+<Button Danger OnClick=OnDeleteClick>
+    Удалить
+</Button>
+
+@code {
+    [Parameter] public EventCallback<MouseEventArgs> OnConfirm { get; set; }
+    [Inject] public ConfirmService _confirmService { get; set; }
+
+    public async void OnDeleteClick(MouseEventArgs e)
+    {
+        var result = await _confirmService.Show("Потдтвердите действие", "Уверены что хотите удалить?", ConfirmButtons.OKCancel, ConfirmIcon.Warning);
+
+        if (result == ConfirmResult.OK)
+        {
+            _ = OnConfirm.InvokeAsync(e);
+        }
+    }
+}

@@ -1,0 +1,117 @@
+﻿@page "/ContestManagment"
+
+<div class="content-wrapper">
+
+    <h1>Редактирование конкурсов</h1>
+    <hr>
+
+    <div class="text-right mb-3">
+        <Button Type="@ButtonType.Primary" OnClick="AddClick">Создать конкурс</Button>
+    </div>
+
+
+    <div class=spacer-2></div>
+
+    <Table @ref="table"
+           TItem="Contest"
+           DataSource="@Items"
+           Total="_total"
+           @bind-PageIndex="_pageIndex"
+           @bind-PageSize="_pageSize"
+           OnChange="OnChange">
+        @{
+            var zayavka = context;
+        }
+
+        @*<Column @bind-Field="@context.Id" Sortable />*@
+        <Column @bind-Field="@context.Title" Sortable Title="Название">
+            <div>
+                <a class="text-accent" @onclick=@(e=>EditClick(context))>@context.Title</a>
+            </div>
+            <div>
+                <span class="text-secondary">@context.Description</span>
+            </div>
+        </Column>
+
+        <Column @bind-Field="@context.Completed" Sortable>
+            @(context.Completed?"Да":"Нет")
+        </Column>
+        <Column @bind-Field="@context.Created" Format="yyyy-MM-dd" Sortable Title="Создан" />
+
+
+
+        <ActionColumn Title="Действия">
+            <Space>
+                @if (context.Completed == false)
+                {
+                    <Popconfirm Title="Уверены что хотите удалить?"
+                            OnConfirm="()=> Delete(context.Id)"
+                            OkText="Да"
+                            CancelText="Нет">
+                        <Button Danger Size="small" Type="primary">Удалить</Button>
+                    </Popconfirm>
+                }
+            </Space>
+        </ActionColumn>
+    </Table>
+
+    <br />
+    <PagesTotal Page=_pageIndex PageSize=_pageSize TotalPages=_total />
+
+
+</div>
+
+<Modal Title="Создание заявки"
+       Visible="_visible"
+       OnCancel=HandleCancel
+       Footer=null>
+
+    <div class="p-4">
+
+        <AntDesign.Form Model="@_model"
+                        Context="model"
+                        Layout="@FormLayout.Vertical"
+                        OnFinish="HandleOk"
+                        Class="form-compact"
+                        @ref="@form">
+
+
+            <FormItem>
+                <AntDesign.Input @bind-Value="@model.Title" />
+            </FormItem>
+            <FormItem>
+                <AntDesign.TextArea @bind-Value="@model.Description" />
+            </FormItem>
+            <FormItem>
+                <AntDesign.InputNumber @bind-Value="@model.Budget" />
+            </FormItem>
+            <FormItem>
+                <AntDesign.Checkbox @bind-Value="@model.Completed">
+                    Конкурс завершен
+                </AntDesign.Checkbox>
+            </FormItem>
+            @*<FormItem>
+                <AntDesign.DatePicker @bind-Value="@model.Start" />
+                </FormItem>
+                <FormItem>
+                <AntDesign.DatePicker @bind-Value="@model.End" />
+                </FormItem>*@
+
+            <FormItem>
+                <div class="text-right">
+                    <Button OnClick=HandleCancel>
+                        Отмена
+                    </Button>
+                    <Button Type="@ButtonType.Primary" HtmlType="submit" Loading=_modeCreareButtonLoading>
+                        Сохранить
+                    </Button>
+                </div>
+            </FormItem>
+
+        </AntDesign.Form>
+
+
+    </div>
+
+</Modal>
+
